@@ -1,0 +1,90 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<ui:decorate template="/app/assets/layout/template.xhtml">
+		<ui:define name="content">
+			<ui:param name="controller" value="#{cidadeController}"></ui:param>
+			<!-- BEGIN CONTENT -->
+			<div class="page-content-wrapper">
+				<!-- BEGIN CONTENT BODY -->
+				<div class="page-content">
+				<!-- BEGIN PAGE HEADER-->
+				<h3 class="page-title"> 
+					Cidades
+				</h3>
+						<!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet light portlet-fit  calendar">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class=" fa fa-file font-green"></i>
+                                        <span class="caption-subject font-green sbold uppercase">Cadastros</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+								<div class="row">
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bg-height bg-only  bold uppercase"> contato </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bg-height bg-only  bold uppercase"> Cidade </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bold bg-only uppercase"> Cargo e Funções </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width  bold uppercase"> Formação Intelectual</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bold bg-only uppercase">Órgãos e Entidades</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-white bg-width bg-height bg-only bold uppercase">Partidos</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bg-height bg-only bold uppercase">Regionais</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bg-height bg-only bold uppercase">Tratamento</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-2">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bg-width bg-height bg-only bold uppercase">Profissão</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-12">
+                                    <div class="color-demo tooltips">
+                                        <div class="color-view bg-dark bg-font-dark bold bg-width bg-only uppercase">Tipo de Demanda</div>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+				<!-- END PAGE HEADER-->
+				</div>
+				<!-- END CONTENT BODY -->
+			</div>
+			<!-- END CONTENT -->
+		</ui:define>
+	</ui:decorate>
+</f:view>	

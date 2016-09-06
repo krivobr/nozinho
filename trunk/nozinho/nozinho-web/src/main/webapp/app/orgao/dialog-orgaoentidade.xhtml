@@ -1,0 +1,79 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+
+<!-- Modal -->
+<h:form id="panelModalOrgao">
+	<!-- Modal -->					
+	<p:dialog id="processModalOrgao" 
+		widgetVar="processModalOrgao" 
+		modal="true" 
+		header="Cadastrar/Editar Orgão e Entidade"
+		width="600"
+		resizable="false"
+		closable="false"
+	>
+	  <div class="modal-body">
+		<h:panelGroup id="panel" layout="block" styleClass="form-body">
+			<div class="form-group col-md-12">
+				<label>Nome do Orgão e Entidade</label>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-home"></i>
+					</span>
+					<p:inputText 
+						styleClass="form-control" 
+						placeholder="Nome" 
+						value="#{orgaoEntidadeController.entidade.nome}"
+						required="true"
+						requiredMessage="#{messages['message.field.required']}"
+						id="nome"
+					/> 
+				</div>
+				<p:message for="nome"/>
+			</div>											
+		</h:panelGroup>	
+	  </div>
+	  <div class="modal-footer" style="border-top:0;">
+		<div class="button-section">
+			<p:commandButton 
+				styleClass="btn btn-danger"
+				value="Fechar"
+				onclick="PF('processModalOrgao').hide()"
+				process="@this"
+				update="@none"
+			/>
+			<p:commandButton 
+				styleClass="btn btn-primary" 
+				data-dismiss="modal" 
+				action="#{orgaoEntidadeController.processaEntidade}" 
+				process="processModalOrgao"
+				update="panel"
+				value="Salvar"
+				id="btnSalvar"
+				rendered="#{not atalho}"
+			/>
+			<p:defaultCommand rendered="#{not atalho}" target="btnSalvar"/>
+			<p:commandButton 
+				styleClass="btn btn-primary" 
+				data-dismiss="modal" 
+				action="#{orgaoEntidadeController.processaEntidadeAtalho}" 
+				process="processModalOrgao"
+				update="panel, #{update}"
+				value="Salvar"
+				id="btnSalvarAtalho"
+				rendered="#{atalho}"
+			>
+				<f:setPropertyActionListener value="#{bean}" target="#{orgaoEntidadeController.caller}"/>
+			</p:commandButton>
+			<p:defaultCommand rendered="#{atalho}" target="btnSalvarAtalho"/>
+		</div>
+	  </div>
+	</p:dialog>
+</h:form>
+</f:view>	

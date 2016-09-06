@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="IndicaBRPU" transaction-type="RESOURCE_LOCAL">
+		<!-- Commons -->
+		<class>br.com.indicabr.model.PessoaFisica</class>
+		<class>br.com.indicabr.model.PessoaJuridica</class>
+		<class>br.com.indicabr.model.Usuario</class>
+		<class>br.com.indicabr.model.Uf</class>
+		<class>br.com.indicabr.model.Endereco</class>
+		<class>br.com.indicabr.model.Servico</class>
+		<class>br.com.indicabr.model.Oferta</class>
+		<class>br.com.indicabr.model.Contrato</class>
+		<class>br.com.indicabr.model.Plano</class>
+		<class>br.com.indicabr.model.Parcela</class>
+		<class>br.com.indicabr.model.Propaganda</class>
+		<class>br.com.indicabr.model.Perfil</class>		
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+			<property name="hibernate.connection.url" value="jdbc:hsqldb:." />
+			<property name="hibernate.connection.username" value="sa" />
+			<property name="hibernate.connection.password" value="" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql"	value="true" />
+			<property name="hibernate.jdbc.batch_size"	value="20" />
+		</properties>
+	</persistence-unit>
+</persistence>

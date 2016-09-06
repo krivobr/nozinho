@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <!-- BEGIN HEADER INNER -->
+            <div class="page-header-inner ">
+                <!-- BEGIN LOGO -->
+                <div class="page-logo">
+                    <a href="home.html">
+                        <img src="#{request.contextPath}/assets/images/gabinete-logo.png" alt="logo" class="logo-default" /> </a>
+                </div>
+                <!-- END LOGO -->
+                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
+                <!-- END RESPONSIVE MENU TOGGLER -->
+                <!-- BEGIN PAGE ACTIONS -->
+                <!-- DOC: Remove "hide" class to enable the page header actions -->
+                <!-- END PAGE ACTIONS -->
+                <!-- BEGIN PAGE TOP -->
+                <div class="page-top">
+                    <!-- BEGIN HEADER SEARCH BOX -->
+                    <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
+					<h3 class="page-title pull-left" style="line-height: 65px;"> Sistema de Controle de Gabinete</h3>
+                    <!-- END HEADER SEARCH BOX -->
+                    <!-- BEGIN TOP NAVIGATION MENU -->
+				<div class="top-menu">
+	                <h:form>
+                        <div class="input-group" style="display: none">
+                            <input type="text" class="form-control" placeholder="Pesquisa..." name="query"/>
+                            <span class="input-group-btn">
+                                <a href="javascript:;" class="btn submit">
+                                    <i class="icon-magnifier"></i>
+                                </a>
+                            </span>
+                        </div>
+						<ul class="nav navbar-nav pull-right">
+							<!-- BEGIN NOTIFICATION DROPDOWN -->
+							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+							<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" >
+								<p:poll interval="30" listener="#{notificacaoController.atualizaNotificacoes}" update="@form"/>
+								<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+									<i class="icon-bell"></i>
+									<h:outputText value="#{notificacaoController.numNaoLidas}" styleClass="badge badge-danger" rendered="#{notificacaoController.numNaoLidas gt 0}"/> 
+									<span class="badge badge-danger"></span>
+								</a>
+								<ul class="dropdown-menu" style="min-height:55px!important;">
+									<li class="external">
+										<h:panelGroup layout="block" rendered="#{notificacaoController.numNaoLidas eq 0}">
+											Não há notificações não lidas.
+										</h:panelGroup>
+										<h:panelGroup layout="block" rendered="#{notificacaoController.numNaoLidas eq 1}">
+											<h3>
+												<h:outputText value="#{notificacaoController.numNaoLidas}" styleClass="bold"/>
+												Notificação não lida
+											</h3>
+										</h:panelGroup>
+										<h:panelGroup layout="block" rendered="#{notificacaoController.numNaoLidas gt 1}">
+										<h3>
+											<h:outputText value="#{notificacaoController.numNaoLidas}" styleClass="bold" rendered="#{notificacaoController.numNaoLidas gt 1}"/>
+											Notificações não lidas
+										</h3>
+										</h:panelGroup>
+									</li>
+									<li>
+										<ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+											<ui:repeat var="notificacao" value="#{notificacaoController.entidades}">
+												<li class="#{notificacao.lida ? '' : 'nao-lido'}">
+													<p:commandLink
+														actionListener="#{notificacaoController.updateNotificacaoAsLida}"
+														process="@this"
+														update="@form"
+													>
+														<f:param name="idNotificacao" value="#{notificacao.id}"/>
+														<h:outputText value="#{notificacao.dataCriacao}" styleClass="time">
+															<f:convertDateTime pattern="dd/MM/yyyy"/>
+														</h:outputText>
+														<h:outputText value="#{notificacao.mensagem}" styleClass="detais" />
+													</p:commandLink>
+												</li>
+											</ui:repeat>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<!-- END NOTIFICATION DROPDOWN -->
+							<!-- BEGIN USER LOGIN DROPDOWN -->
+							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+							<li class="dropdown dropdown-user">
+								<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">									
+									<p:graphicImage															 
+										value="#{loginController.foto}"
+										rendered="#{not empty loginController.foto}"
+										stream="false"
+										styleClass="img-circle"
+									/>
+									<p:graphicImage										
+										value="/assets/images/avatar.png"
+										rendered="#{empty loginController.foto}"
+										styleClass="img-circle"
+									/>	
+									<span class="username username-hide-on-mobile">
+										<h:outputText value="#{loginController.entidade.login}"/>
+									</span>
+									<i class="fa fa-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-default">
+									<li>
+										<p:commandLink 
+											actionListener="#{usuarioController.prepareUpdate}"
+											update="panelMinhaConta"
+											process="@this"
+											oncomplete="PF('minhaContaModal').show()"
+										>
+											<f:setPropertyActionListener value="#{loginController.entidade}" target="#{usuarioController.entidade}" />
+											<i class="fa fa-user"></i> 
+											Minha Conta
+										</p:commandLink>
+									</li>
+									<ui:remove>
+										<li>
+											<a href="app_calendar.html">
+												<i class="icon-calendar"></i> My Calendar </a>
+										</li>
+										<li>
+											<a href="app_inbox.html">
+												<i class="icon-envelope-open"></i> My Inbox
+												<span class="badge badge-danger"> 3 </span>
+											</a>
+										</li>
+										<li>
+											<a href="app_todo_2.html">
+												<i class="icon-rocket"></i> My Tasks
+												<span class="badge badge-success"> 7 </span>
+											</a>
+										</li>
+										<li class="divider"> </li>
+										<li>
+											<a href="page_user_lock_1.html">
+												<i class="icon-lock"></i> Lock Screen </a>
+										</li>
+									</ui:remove>
+									<li>
+										<h:outputLink 
+											value="#{request.contextPath}/index.xhtml?redirect=true"
+											styleClass="ui-commandlink ui-widget"
+										>
+											<p:ajax event="click" listener="#{loginController.logout}"/>
+											<i class="fa fa-sign-out"></i> 
+											Sair
+										</h:outputLink>
+									</li>
+								</ul>
+							</li>
+							<!-- END USER LOGIN DROPDOWN -->
+							<!-- BEGIN QUICK SIDEBAR TOGGLER -->
+							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+							<!-- END QUICK SIDEBAR TOGGLER -->
+						</ul>						
+					</h:form>
+				</div>
+                    <!-- END TOP NAVIGATION MENU -->
+                </div>
+                <!-- END PAGE TOP -->
+            </div>
+            <!-- END HEADER INNER -->
+        </div>
+        <!-- END HEADER -->
+	<div class="clearfix"></div>
+	<!-- END HEADER & CONTENT DIVIDER -->
+</ui:composition>

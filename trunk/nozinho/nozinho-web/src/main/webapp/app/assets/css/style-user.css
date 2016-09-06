@@ -1,0 +1,24 @@
+.ui-fileupload-content{
+	display:none !important;
+}
+.ui-fileupload-content, .ui-fileupload-buttonbar{
+	border: 0px !important;
+}
+.ui-fileupload-buttonbar{
+	padding-bottom: 0px;
+	margin-top:30px;
+}
+.ui-fileupload-choose{
+	font-size: 10px !important;
+}
+
+.bg-width{
+	height:100%;
+	width:100%;
+	min-height:125px;
+	min-width:152px;
+
+}
+.bg-height{
+	line-height:3;
+}

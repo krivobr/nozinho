@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<!-- END SIDEBAR -->
+		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+		<div class="page-sidebar navbar-collapse collapse">
+			<!-- BEGIN SIDEBAR MENU -->
+			<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+			<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+			<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+			<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+			<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+			<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+			<ul
+				class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu "
+				data-keep-expanded="false" data-auto-scroll="true"
+				data-slide-speed="200">
+				<li class="nav-item start active ">
+					<h:outputLink 
+						value="#{request.contextPath}/app/index.xhtml" 
+						styleClass="nav-link"
+					>
+						<i class="icon-home"></i> 
+						<span class="title">Inicio</span> 
+						<span class="selected"></span> 
+						<span class="arrow open"></span>
+					</h:outputLink>
+				</li>
+				<li class="nav-item  "><a href="javascript:;"
+					class="nav-link nav-toggle"> <i class="fa fa-file-o"></i> <span
+						class="title">Cadastros</span> <span class="arrow"></span>
+				</a>
+					<ul class="sub-menu">
+						<li class="nav-item  ">
+							<h:outputLink 
+								value="#{request.contextPath}/app/contato/list-contatos.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCT')}"			
+							>
+								<span class="title">Contato</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCT'))}"			
+							>
+								<span class="title">Contato</span>
+							</h:outputLink>
+						</li>
+						
+						<li class="nav-item  ">
+							<h:outputLink 
+								value="#{request.contextPath}/app/cidade/list-cidades.xhtml" 								
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCD')}"			
+							>
+								<span class="title">Cidades</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCD'))}"			
+							>
+								<span class="title">Cidades</span>
+							</h:outputLink>
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/cargo/list-cargosfuncao.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCR')}"			
+							>
+								<span class="title">Cargo e Funções</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CCR'))}"			
+							>
+								<span class="title">Cargo e Funções</span>
+							</h:outputLink>							
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/fintelectual/list-fintelectual.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CFR')}"			
+							>
+								<span class="title">Formação Intelectual</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CFR'))}"			
+							>
+								<span class="title">Formação Intelectual</span>
+							</h:outputLink>	
+						</li>						
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/orgao/list-orgaoentidade.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('COR')}"			
+							>
+								<span class="title">Órgãos e Entidades</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('COR'))}"			
+							>
+								<span class="title">Órgãos e Entidades</span>
+							</h:outputLink>	
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/partido/list-partidos.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPT')}"			
+							>
+								<span class="title">Partidos</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPT'))}"			
+							>
+								<span class="title">Partidos</span>
+							</h:outputLink>								
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/regional/list-regionais.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CRG')}"			
+							>
+								<span class="title">Regionais</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CRG'))}"			
+							>
+								<span class="title">Regionais</span>
+							</h:outputLink>								
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/tratamento/list-tratamentos.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CTR')}"			
+							>
+								<span class="title">Tratamento</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CTR'))}"			
+							>
+								<span class="title">Tratamento</span>
+							</h:outputLink>	
+						</li>						
+						<li class="nav-item ">
+							<h:outputLink 
+								value="#{request.contextPath}/app/profissao/list-profissoes.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPR')}"			
+							>
+								<span class="title">Profissão</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPR'))}"			
+							>
+								<span class="title">Profissão</span>
+							</h:outputLink>
+						</li>
+						<li class="nav-item ">
+							<h:outputLink 
+								value="#{request.contextPath}/app/tipodemanda/list-tipodemanda.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CTD')}"			
+							>
+								<span class="title">Tipo de Demanda</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CTD'))}"			
+							>
+								<span class="title">Tipo de Demanda</span>
+							</h:outputLink>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item">
+					<h:outputLink 
+						value="#{request.contextPath}/app/oficio/list-oficios.xhtml" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPR')}"			
+					>
+						<i class="fa fa-file-text-o"></i>
+						<span class="title">Ofícios</span>
+						<span class="arrow"></span>
+					</h:outputLink>
+					<h:outputLink 
+						value="#" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPR'))}"			
+					>
+						<i class="fa fa-file-text-o"></i>
+						<span class="title">Ofícios</span>
+						<span class="arrow"></span>
+					</h:outputLink>
+				</li>
+				<li class="nav-item">
+					<h:outputLink 
+						value="#{request.contextPath}/app/demanda/list-demandas.xhtml" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CDM')}"			
+					>
+						<i class="fa fa-tasks"></i>
+						<span class="title">Atendimentos/Demandas</span>
+						<span class="arrow"></span>
+					</h:outputLink>
+					<h:outputLink 
+						value="#" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CDM'))}"			
+					>
+						<i class="fa fa-tasks"></i>
+						<span class="title">Atendimentos/Demandas</span>
+						<span class="arrow"></span>
+					</h:outputLink>					
+				</li>
+				<li class="nav-item">
+					<h:outputLink 
+						value="#{request.contextPath}/app/agenda/agenda.xhtml" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('AAG')}"			
+					>
+						<i class="fa fa-calendar-o"></i> 
+						<span class="title">Agenda</span> 
+						<span class="arrow"></span>
+					</h:outputLink>
+					<h:outputLink 
+						value="#" 
+						styleClass="nav-link nav-toggle"
+						rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('AAG'))}"			
+					>
+						<i class="fa fa-calendar-o"></i> 
+						<span class="title">Agenda</span> 
+						<span class="arrow"></span>
+					</h:outputLink>					
+				</li>
+				<ui:remove>
+				<li class="nav-item  "><a href="javascript:;"
+					class="nav-link nav-toggle"> <i class="fa fa-comments"></i> <span
+						class="title">Comunicação</span> <span class="arrow"></span>
+				</a>
+					<ul class="sub-menu">
+						<li class="nav-item  "><a href="#" class="nav-link "> <span
+								class="title">Email</span>
+						</a></li>
+						<li class="nav-item  "><a href="#" class="nav-link "> <span
+								class="title">Sms</span>
+						</a></li>
+						<li class="nav-item  "><a href="elements_ribbons.xhtml"
+							class="nav-link "> <span class="title">Etiquetas</span>
+						</a></li>
+					</ul></li>
+				<li class="nav-item  "><a href="javascript:;"
+					class="nav-link nav-toggle"> <i class="fa fa-bar-chart"></i> <span
+						class="title">Relatórios</span> <span class="arrow"></span>
+				</a>
+					<ul class="sub-menu">
+						<li class="nav-item  "><a href="table_static_basic.xhtml"
+							class="nav-link "> <span class="title">Status Demanda</span>
+						</a></li>
+						<li class="nav-item  "><a href="table_static_responsive.xhtml"
+							class="nav-link "> <span class="title">Estatísticas do
+									Gabinete</span>
+						</a></li>
+						<li class="nav-item  "><a href="table_bootstrap.xhtml"
+							class="nav-link "> <span class="title">Bootstrap
+									Tables</span>
+						</a></li>
+					</ul>
+				</li>
+				</ui:remove>
+				<li class="nav-item  "><a href="javascript:;"
+					class="nav-link nav-toggle"> <i class="icon-settings"></i> <span
+						class="title">Sistema</span> <span class="arrow"></span>
+				</a>
+					<ul class="sub-menu">
+						<ui:remove>
+						<li class="nav-item  "><a href="table_static_basic.xhtml"
+							class="nav-link "> <span class="title">Parâmetro</span>
+						</a></li>
+						</ui:remove>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/usuario/list-usuarios.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CUS')}"			
+							>
+								<span class="title">Usuários</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CUS'))}"			
+							>
+								<span class="title">Usuários</span>
+							</h:outputLink>
+						</li>
+						<li class="nav-item">
+							<h:outputLink 
+								value="#{request.contextPath}/app/perfil/list-perfis.xhtml" 
+								styleClass="nav-link"
+								rendered="#{facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPF')}"			
+							>
+								<span class="title">Perfil</span>
+							</h:outputLink>
+							<h:outputLink 
+								value="#" 
+								styleClass="nav-link"
+								rendered="#{not (facesContext.externalContext.isUserInRole('ADM') or facesContext.externalContext.isUserInRole('CPF'))}"			
+							>
+								<span class="title">Perfil</span>
+							</h:outputLink>
+						</li>
+					</ul></li>
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+		<!-- END SIDEBAR -->
+	</div>
+	<!-- END SIDEBAR -->
+</ui:composition>

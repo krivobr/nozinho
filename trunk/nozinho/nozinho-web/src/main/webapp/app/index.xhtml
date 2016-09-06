@@ -1,0 +1,168 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<ui:decorate template="/app/assets/layout/template.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<div class="page-content-wrapper">
+					<p:poll interval="60" listener="#{dashboardController.updateDashBoard}" update="panelDashboard" process="@this"/>
+					<h:panelGroup id="panelDashboard" layout="block" styleClass="page-content">
+						<h3 class="page-title">Demandas</h3>
+						<div class="row">
+							<!-- AREA DE TOTAIS -->
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+								<div class="dashboard-stat2 ">
+									<div class="display">
+										<div class="number">
+											<h3 class="font-green-soft">
+												<h:outputText value="#{dashboardController.entidade.numDemandas15}"/>
+											</h3>
+											<small>Com menos de 15 dias</small>
+										</div>
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									</div>
+									<div class="progress-info">
+										<div class="progress">
+											<span style="width: #{(dashboardController.entidade.numDemandas15 / dashboardController.entidade.totalDemandas) * 100}%;"
+												class="progress-bar progress-bar-success green-soft">
+											</span>
+										</div>
+										<div class="status">
+											<div class="status-title"></div>
+											<div class="status-number">#{(dashboardController.entidade.totalDemandas eq 0) ? 0.0 : ((dashboardController.entidade.numDemandas15 / dashboardController.entidade.totalDemandas) * 100)}%</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+								<div class="dashboard-stat2 ">
+									<div class="display">
+										<div class="number">
+											<h3 class="font-yellow-soft">
+												<span data-counter="counterup">#{dashboardController.entidade.numDemandas30}</span>
+											</h3>
+											<small>Entre 15 e 30 dias</small>
+										</div>
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									</div>
+									<div class="progress-info">
+										<div class="progress">
+											<span style="width: #{(dashboardController.entidade.numDemandas30 / dashboardController.entidade.totalDemandas) * 100}%;"
+												class="progress-bar progress-bar-success yellow-soft"> 
+											</span>
+										</div>
+										<div class="status">
+											<div class="status-title"></div>
+											<div class="status-number">#{(dashboardController.entidade.totalDemandas eq 0) ? 0.0 : ((dashboardController.entidade.numDemandas30 / dashboardController.entidade.totalDemandas) * 100)}%</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+								<div class="dashboard-stat2 ">
+									<div class="display">
+										<div class="number">
+											<h3 class="font-orange-soft">
+												<span data-counter="counterup" data-value="567">#{dashboardController.entidade.numDemandas60}</span>
+											</h3>
+											<small>Entre 30 e 60 dias</small>
+										</div>
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									</div>
+									<div class="progress-info">
+										<div class="progress">
+											<span style="width: #{(dashboardController.entidade.numDemandas60 / dashboardController.entidade.totalDemandas) * 100}%;"
+												class="progress-bar progress-bar-success orange-soft">
+											</span>
+										</div>
+										<div class="status">
+											<div class="status-title"></div>
+											<div class="status-number">#{(dashboardController.entidade.totalDemandas eq 0) ? 0.0 : ((dashboardController.entidade.numDemandas60 / dashboardController.entidade.totalDemandas) * 100)}%</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+								<div class="dashboard-stat2 ">
+									<div class="display">
+										<div class="number">
+											<h3 class="font-red-soft">
+												<span data-counter="counterup" data-value="276">#{dashboardController.entidade.numDemandasMaior60}</span>
+											</h3>
+											<small>Com mais de 60 dias</small>
+										</div>
+										<div class="icon">
+											<i class="fa fa-file"></i>
+										</div>
+									</div>
+									<div class="progress-info">
+										<div class="progress">
+											<span style="width: #{(dashboardController.entidade.numDemandasMaior60 / dashboardController.entidade.totalDemandas) * 100}%;"
+												class="progress-bar progress-bar-success red-soft">
+											</span>
+										</div>
+										<div class="status">
+											<div class="status-title"></div>
+											<div class="status-number">#{(dashboardController.entidade.totalDemandas eq 0) ? 0.0 : ((dashboardController.entidade.numDemandasMaior60 / dashboardController.entidade.totalDemandas) * 100)}%</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 col-sm-6">
+								<div class="portlet light ">
+									<div class="portlet-title">
+										<div class="caption">
+											<span class="caption-subject bold uppercase font-dark">Demandas</span>
+											<span class="caption-helper">por mês</span>
+										</div>										
+									</div>
+									<div class="portlet-body">
+										<div id="barChart" class="CSSAnimationChart"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-6">
+								<div class="portlet light ">
+									<div class="portlet-title">
+										<div class="caption">
+											<span class="caption-subject bold uppercase font-dark">Demandas</span>
+											<span class="caption-helper">por tipo</span>
+										</div>										
+									</div>
+									<div class="portlet-body">
+										<div id="pieChart" class="CSSAnimationChart"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Resources -->
+						<script src="#{request.contextPath}/app/assets/js/charts/amcharts.js"></script>
+						<script src="#{request.contextPath}/app/assets/js/charts/serial.js"></script>
+						<script src="#{request.contextPath}/app/assets/js/charts/pie.js"></script>
+						<script src="#{request.contextPath}/app/assets/js/charts/themes/light.js"></script>
+						<!-- Chart code -->
+						<script>
+						/*<![CDATA[*/
+							var serialChart = AmCharts.makeChart( "barChart", #{dashboardController.serialChart});
+							var pieChart = AmCharts.makeChart( "pieChart", #{dashboardController.pieChart});
+						/*]]>*/
+						</script>
+					</h:panelGroup>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:decorate>
+</f:view>

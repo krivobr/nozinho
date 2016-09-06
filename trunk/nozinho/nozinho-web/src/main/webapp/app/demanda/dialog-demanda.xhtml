@@ -1,0 +1,260 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">	
+	<!-- Modal -->
+	<h:form id="panelModalDemanda">					
+		<p:dialog id="processModal" 
+			widgetVar="processModal" 
+			modal="true" 
+			header="Cadastrar/Editar Atendimento/Demanda"
+			width="1100"
+			resizable="false"
+			style="max-height:600px;overflow:auto"
+		>
+		  <div class="ui-fluid">
+			<h:panelGroup id="panel" layout="block" styleClass="form-body">
+				<div class="form-group col-md-10"></div>
+				<div class="form-group col-md-2">
+					<h:outputLabel 
+						value="Número Demanda" 
+					/>
+					<p:inputText 
+						value="#{controller.entidade.numero}"
+						required="true"
+						requiredMessage="#{messages['message.field.required']}"
+						id="numeroDemanda"
+					>
+					</p:inputText>
+					<p:message for="numeroDemanda" />
+				</div>
+				<div class="form-group col-md-6">
+					<label>Assunto</label>
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fa fa-user"></i>
+						</span>
+						<p:inputText 
+							styleClass="form-control" 
+							placeholder="Assunto" 
+							value="#{controller.entidade.assunto}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							id="assunto"
+						/> 
+					</div>
+					<p:message for="assunto"/>
+				</div>
+				<div class="col-md-3">
+					<label>Tipo do Contato:</label>
+					<h:selectOneMenu
+						styleClass="form-control"
+						value="#{controller.entidade.tipoAtendimento}"
+					>
+						<f:selectItems 
+							value="#{controller.formasEncaminhamento}" 
+							var="tipoContato"
+							itemLabel="#{tipoContato.descricao}"
+							itemValue="#{tipoContato}"
+						/>
+						<p:ajax event="change" process="@this" update="oficio"/>
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-md-3">
+					<label>Ofício:</label>
+					<div class="input-group">
+						<p:autoComplete 
+							id="oficio" 
+							multiple="false" 
+				            forceSelection="true"
+				            style="width:100%"
+				            value="#{controller.entidade.oficio}"
+				            completeMethod="#{oficioController.findByNumeroLike}"
+				            var="oficio"
+				            converter="entidadeConverter"
+				            itemLabel="#{oficio.numero}"
+				            itemValue="#{oficio}"
+				            emptyMessage="Não há ofícios com este número"
+				            required="true"
+				            requiredMessage="#{messages['message.field.required']}"
+				            styleClass="form-control"
+				            disabled="#{controller.entidade.tipoAtendimento != 'OFICIO_CORRESPONDENCIA'}"
+				         >
+						</p:autoComplete>
+						<p:commandLink
+								actionListener="#{oficioController.prepareInclude}"
+								update="panelModalOficio"
+								process="@this"
+								oncomplete="PF('processModalOficio').show()"
+								styleClass="input-group-addon"
+							>
+							<i class="fa fa-plus"></i>
+							<f:setPropertyActionListener value="oficio" target="#{oficioController.property}"/>
+							<f:setPropertyActionListener value="panelModalDemanda:oficio" target="#{oficioController.update}"/>
+						</p:commandLink>
+					</div>
+					<p:message for="oficio"/> 
+				</div>
+				<div class="col-md-4" style="clear:both;">
+					<label>Tipo de Demanda</label>
+					<h:selectOneMenu 										
+						value="#{controller.entidade.tipoDemanda}"
+						required="true"
+						requiredMessage="#{messages['message.field.required']}"
+						id="tipoDemanda"
+						styleClass="form-control"
+						converter="entidadeConverter"
+					>
+						<f:selectItems 
+							value="#{tipoDemandaController.entidades}"
+							var="tipoDemanda"
+							itemLabel="#{tipoDemanda.nome}"
+							itemValue="#{tipoDemanda}"
+						/>
+					</h:selectOneMenu>
+					<p:message for="tipoDemanda"/>
+				</div>
+				<div class="form-group col-md-4">
+					<label>Encaminhado por:</label>
+					<div class="input-group">
+						<p:autoComplete 
+							id="encaminhadoPor" 
+							multiple="false" 
+				            forceSelection="true"
+				            style="width:100%"
+				            value="#{controller.entidade.contato}"
+				            completeMethod="#{contatoController.findContatosByQuery}"
+				            var="convidado"
+				            converter="entidadeConverter"
+				            itemLabel="#{convidado.nome}"
+				            itemValue="#{convidado}"
+				            emptyMessage="Não há contatos cujo nome começa com esta letra"
+				            required="true"
+				            requiredMessage="#{messages['message.field.required']}"
+				            styleClass="form-control"
+				         >
+						</p:autoComplete>
+						<p:commandLink
+								actionListener="#{contatoController.prepareInclude}"
+								update="panelDialog"
+								process="@this"
+								oncomplete="PF('processModalContato').show()"
+								styleClass="input-group-addon"
+							>
+							<i class="fa fa-plus"></i>
+							<f:setPropertyActionListener value="encaminhadoPor" target="#{contatoController.property}"/>
+							<f:setPropertyActionListener value="panelModalDemanda:encaminhadoPor" target="#{contatoController.update}"/>
+						</p:commandLink>
+					</div> 
+				</div>
+				<div class="form-group col-md-4">
+					<label>Responsável:</label>
+					<div class="input-group">
+						<p:autoComplete 
+							id="responsavel" 
+							multiple="false" 
+				            forceSelection="true"
+				            style="width:100%"
+				            value="#{controller.entidade.usuarioResponsavel}"
+				            completeMethod="#{usuarioController.findByNome}"
+				            var="usuario"
+				            converter="entidadeConverter"
+				            itemLabel="#{usuario.contato.nome}"
+				            itemValue="#{usuario}"
+				            emptyMessage="Não há usuários cujo nome começa com esta letra"
+				            required="true"
+				            requiredMessage="#{messages['message.field.required']}"
+				            styleClass="form-control"
+				         >
+						</p:autoComplete>
+						<p:commandLink
+								actionListener="#{usuarioController.prepareInclude}"
+								update="panelModalUsuario"
+								process="@this"
+								oncomplete="PF('processModalUsuario').show()"
+								styleClass="input-group-addon"
+							>
+							<i class="fa fa-plus"></i>
+						</p:commandLink>
+					</div>
+					<p:message for="responsavel"/> 
+				</div>
+				<h:panelGroup layout="block" id="panelCampos">
+					<h:panelGroup layout="block" rendered="true">
+						<ui:include src="atendimento-saude.xhtml"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<div class="form-group col-md-12" style="margin-top:20px">
+					<label>Anexar documentos</label>
+					<p:fileUpload 
+						fileUploadListener="#{controller.handleFileUpload}" 
+						mode="advanced" 
+						dragDropSupport="false"
+						auto="true"
+	   					multiple="true" 
+	   					update="formMessages:messages" 
+	   					sizeLimit="100000000" 
+	   					fileLimit="3" 
+	   					allowTypes="/(\.|\/)(gif|jpe?g|png|doc|pdf|xls|ppt|txt|msg)$/"
+	   					label="Selecionar"
+	   					fileLimitMessage="Arquivo maior que o permitido (100Mb)" 
+	   				/>
+				</div>
+				
+			</h:panelGroup>	
+		  </div>
+		  <div class="modal-footer" style="border-top:0;clear: both;">
+		  	<h:panelGroup layout="block" id="panelButtons">
+				<div class="button-section">
+					<p:commandButton 
+						styleClass="btn btn-danger"
+						value="Fechar"
+						onclick="PF('processModal').hide()" 
+					/>
+					<p:commandButton 
+						actionListener="#{controller.prepareUpdate}"
+						oncomplete="PF('historicModal').show()"
+						process="@this"
+						update="panelHistorico"
+						rendered="#{not empty controller.entidade.historico}"
+						value="Historico"
+						styleClass="btn btn-secondary"
+					>
+						<f:setPropertyActionListener 
+							value="#{controller.entidade.documento.documento}" 
+							target="#{documentViewerController.document}"
+						/>
+					</p:commandButton>
+					<p:commandButton 
+						actionListener="#{controller.prepareUpdate}"
+						oncomplete="PF('documentModal').show()"
+						process="@this"
+						update="panelGroupDocument"
+						rendered="#{not empty controller.entidade.documento.documento}"
+						value="Documento"
+						styleClass="btn btn-success"
+					>
+						<f:setPropertyActionListener 
+							value="#{controller.entidade.documento.documento}" 
+							target="#{documentViewerController.document}"
+						/>
+					</p:commandButton>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						data-dismiss="modal" 
+						action="#{controller.processaEntidade}" 
+						process="processModal"
+						update="panel"
+						value="Salvar"
+						id="btnSalvar"
+					/>
+					<p:defaultCommand target="btnSalvar"/>
+				</div>
+		  	</h:panelGroup>
+		  </div>
+		</p:dialog>
+	</h:form>
+</f:view>

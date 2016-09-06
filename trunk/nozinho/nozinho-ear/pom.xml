@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>nozinho-ear</artifactId>
+	<packaging>ear</packaging>
+	<name>${project.artifactId}</name>
+
+	<parent>
+		<artifactId>nozinho</artifactId>
+		<groupId>br.com.nozinho</groupId>
+		<version>${application.version}</version>
+	</parent>
+
+	<dependencies>
+		
+		<dependency>
+	         <groupId>org.jboss.spec.javax.ejb</groupId>
+	         <artifactId>jboss-ejb-api_3.1_spec</artifactId>
+	         <scope>provided</scope>
+      	</dependency>
+		<dependency>
+			<groupId>br.com.nozinho</groupId>
+			<artifactId>nozinho-negocio</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.nozinho</groupId>
+			<artifactId>nozinho-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		</dependency>
+				
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<filtering>true</filtering>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<fileNameMapping>no-version-for-ejb</fileNameMapping>
+					<generateApplicationXml>true</generateApplicationXml>
+					<version>6</version>
+					<modules>
+						<webModule>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>nozinho-web</artifactId>
+							<contextRoot>/nozinho</contextRoot>
+						</webModule>						
+					</modules>
+					<jboss>
+						<version>5</version>
+						<unauthenticated-principal>guest</unauthenticated-principal>
+					</jboss>
+					<archive>
+						<manifestEntries>							
+							<Dependencies>com.sun.xml.messaging.saaj , javaee.api ,org.apache.xerces</Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,62 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+        <div class="form-group col-md-8">
+			<label>Beneficiário</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete 
+						id="beneficiario" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.contatoInteressado}"
+			            completeMethod="#{contatoController.findContatosPJByQuery}"
+			            var="beneficiario"
+			            converter="entidadeConverter"
+			            itemLabel="#{beneficiario.nome}"
+			            itemValue="#{beneficiario}"
+			            emptyMessage="Não há beneficiários cujo nome começa com esta letra"
+			            required="true"
+			            requiredMessage="#{messages['message.field.required']}"
+			            styleClass="form-control"
+			         >
+					</p:autoComplete>
+			</div>
+			<p:message for="beneficiario"/>
+		</div>
+		<div class="form-group col-md-4">
+			<label>Valor</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-usd"></i>
+				</span>
+				<p:inputNumber
+					id="valorEmenda"
+					value="#{controller.entidade.valor}"
+					styleClass="form-control"
+					decimalPlaces="2"
+					decimalSeparator="," 
+					thousandSeparator="."
+				>
+				</p:inputNumber>
+			</div>
+		</div>
+		<div class="form-group col-md-12">
+			<label>Descrição</label>
+			<h:inputTextarea
+				id="descricao"
+				value="#{controller.demandaHistorico.descricao}"
+				styleClass="form-control"
+				required="true"
+				requiredMessage="#{messages['message.field.required']}"
+			/>
+			<p:message for="descricao"/>
+		</div>
+</f:view>

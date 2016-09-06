@@ -1,0 +1,302 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<ui:decorate template="/app/assets/layout/template.xhtml">	
+		<ui:define name="content">
+			<h:form id="appForm">
+				<ui:param name="controller" value="#{agendaController}"></ui:param>
+	            <!-- BEGIN CONTENT -->
+	            <div class="page-content-wrapper">
+	                <!-- BEGIN CONTENT BODY -->
+	                <div class="page-content">                    
+	                    <h3 class="page-title">Agenda</h3>
+	                    <div class="page-bar">
+	                        <ul class="page-breadcrumb">
+	                            <li>
+	                                <i class="icon-home"></i>
+	                                <a href="home.xhtml">Home</a>
+	                                <i class="fa fa-angle-right"></i>
+	                            </li>
+	                            <li>
+	                                <span>Agenda</span>
+	                            </li>
+	                        </ul>
+	                        <div class="page-toolbar">
+	                            <div class="btn-group pull-right">
+	                                <button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true"> Actions
+	                                    <i class="fa fa-angle-down"></i>
+	                                </button>
+	                                <ul class="dropdown-menu pull-right" role="menu">
+	                                    <li>
+	                                        <a href="#">
+	                                            <i class="icon-bell"></i> Action</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="#">
+	                                            <i class="icon-shield"></i> Another action</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="#">
+	                                            <i class="icon-user"></i> Something else here</a>
+	                                    </li>
+	                                    <li class="divider"> </li>
+	                                    <li>
+	                                        <a href="#">
+	                                            <i class="icon-bag"></i> Separated link</a>
+	                                    </li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <!-- END PAGE HEADER-->
+	                    <div class="row">
+	                        <div class="col-md-12">
+	                            <div class="portlet light portlet-fit  calendar">
+	                                <div class="portlet-title">
+	                                    <div class="caption">
+	                                        <i class=" icon-layers font-green"></i>
+	                                        <span class="caption-subject font-green sbold uppercase">Agenda</span>
+	                                    </div>
+	                                </div>
+	                                <div class="portlet-body">
+	                                    <div class="row">
+	                                        <div class="col-md-12 col-sm-12">
+	                                            <div id="external-events">
+	                                                <p:commandButton 
+														styleClass="btn btn-primary" 
+														process="@none"
+														update="panelModal panelFooter"
+														value="Novo Evento"
+														oncomplete="PF('processModal').show()"
+													/>
+	                                                <hr/>
+	                                            </div>
+	                                        </div>
+	                                        <div class="col-md-12 col-sm-12">
+	                                            <p:schedule id="schedule" value="#{agendaController.eventModel}" resizable="false">
+	                                            	<p:ajax event="dateSelect" listener="#{agendaController.onDateSelect}" update="panelModal panelFooter" oncomplete="PF('processModal').show();" />
+										            <p:ajax event="eventSelect" listener="#{agendaController.onEventSelect}" update="panelModal panelFooter" oncomplete="PF('processModal').show();" />
+										            <p:ajax event="eventMove" listener="#{agendaController.onEventMove}"/>
+										            <p:ajax event="eventResize" listener="#{agendaController.onEventResize}"/>
+	                                            </p:schedule>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <!-- END CONTENT BODY -->
+	            </div>
+	            <!-- END CONTENT -->
+	            <p:dialog id="processModal" 
+							widgetVar="processModal" 
+							modal="true" 
+							header="Cadastrar/Editar Eventos"
+							width="700"
+							resizable="false"
+							style="max-height:900px;overflow:auto"
+				>
+					<div class="ui-fluid">
+						<h:panelGroup id="panelModal" layout="block" styleClass="form-body">
+							<h3 class="cadastro-header font-blue">Dados do Evento</h3>
+							<div class="form-group col-md-12">
+								<label>Título do Evento</label>
+								<p:inputText id="titulo" styleClass="form-control" value="#{controller.evento.titulo}"/>
+							</div>
+							<div class="form-group col-md-3">
+								<h:outputText value="Dia inteiro: " />
+	        					<p:selectBooleanCheckbox
+	        						value="#{controller.evento.diaTodo}"        						
+	        					>
+	        						<p:ajax event="change" process="@this" update="panelDataInicio panelDataTermino"/>
+	        					</p:selectBooleanCheckbox>
+							</div>
+							<div class="form-group col-md-3">
+	        					<h:outputText value="Repetir: " rendered="false"/> 
+	        					<p:selectBooleanCheckbox rendered="false"
+	        						value="#{controller.repetir}"
+	        					>
+	        						<p:ajax event="change" process="@this" oncomplete="PF('repetirModal').show()" update="@none"/>
+	        					</p:selectBooleanCheckbox>
+							</div>
+							<div class="form-group col-md-3"></div>
+							<div class="form-group col-md-3"></div>
+							<div class="form-group col-md-6" style="clear: both;">
+								<h:panelGroup layout="block" id="panelDataInicio">
+									<h:outputLabel value="Data/Hora de Ínicio" rendered="#{not controller.diaInteiro}"/>
+									<p:calendar 
+										mask="true" 
+										pattern="dd/MM/yyyy HH:mm" 
+										rendered="#{not controller.diaInteiro}"
+										value="#{controller.evento.dataInicio}"
+										required="true"
+										requiredMessage="#{messages['message.field.required']}"
+									/>
+									<h:outputLabel value="Data de Ínicio" rendered="#{controller.diaInteiro}"/>
+									<p:calendar 
+										mask="true" 
+										pattern="dd/MM/yyyy" 
+										rendered="#{controller.diaInteiro}"
+										value="#{controller.evento.dataInicio}"
+										required="true"
+										requiredMessage="#{messages['message.field.required']}"									
+									/>
+								</h:panelGroup>
+							</div>
+							<div class="form-group col-md-6">
+								<h:panelGroup layout="block" id="panelDataTermino">
+									<h:outputLabel value="Data/Hora de Término" rendered="#{not controller.diaInteiro}"/>
+									<p:calendar 
+										mask="true" 
+										pattern="dd/MM/yyyy HH:mm" 
+										rendered="#{not controller.diaInteiro}"
+										value="#{controller.evento.dataTermino}"
+										required="true"
+										requiredMessage="#{messages['message.field.required']}"
+									/>
+									<h:outputLabel value="Data de Término" rendered="#{controller.diaInteiro}"/>
+									<p:calendar 
+										mask="true" 
+										pattern="dd/MM/yyyy" 
+										rendered="#{controller.diaInteiro}"
+										value="#{controller.evento.dataTermino}"
+										required="true"
+										requiredMessage="#{messages['message.field.required']}"
+									/>
+								</h:panelGroup>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Local</label>
+								<p:inputText 
+									id="local" 
+									styleClass="form-control"
+									value="#{controller.evento.local}"
+								/>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Descrição</label>
+								<p:inputTextarea 
+									id="descricao" 
+									styleClass="form-control"
+									value="#{controller.evento.descricao}"
+								/>
+							</div>
+							<h3 class="cadastro-header font-blue" style="clear:both;">Convidados</h3>
+							<div class="form-group col-md-12">
+								<label>Digite o nome dos Contatos Convidados</label>
+								<p:autoComplete 
+									id="convidados" 
+									multiple="true" 
+						            forceSelection="true"
+						            style="width:100%"
+						            value="#{controller.evento.convidados}"
+						            completeMethod="#{controller.completeConvidados}"
+						            var="convidado"
+						            converter="entidadeConverter"
+						            itemLabel="#{convidado.nome}"
+						            itemValue="#{convidado}"
+						            emptyMessage="Não há convidados cujo nome começa com esta letra"
+						         >
+						        </p:autoComplete>
+							</div>								
+						</h:panelGroup>
+					</div>
+					<h:panelGroup id="panelFooter" layout="block" styleClass="modal-footer" style="border-top:0;">
+						<div class="button-section">
+							<p:commandButton 
+								styleClass="btn btn-danger"
+								value="Fechar"
+								onclick="PF('processModal').hide()" 
+							/>
+							<p:commandButton 
+								styleClass="btn"
+								value="Excluir"
+								action="#{controller.deleteEntidade}" 
+								process="processModal"
+								update="panelModal"
+								rendered="#{controller.evento.id != null}"
+							/>
+							<p:commandButton 
+								styleClass="btn btn-primary" 
+								data-dismiss="modal" 
+								action="#{controller.processaEntidade}" 
+								process="processModal"
+								update="panelModal"
+								value="Salvar"
+								id="btnSalvar"
+							/>
+							<p:defaultCommand target="btnSalvar"/>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+				<p:dialog id="repetirModal" 
+							widgetVar="repetirModal" 
+							modal="true" 
+							header="Repetir"
+							width="400"
+							resizable="false"
+							style="max-height:600px;overflow:auto"
+				>
+					<div class="ui-fluid">
+						<h:panelGroup id="panelRepetir" layout="block" styleClass="form-body">
+							<div class="form-group col-md-12">
+								<label>Repetição</label>
+								<p:selectOneMenu>
+									<f:selectItem itemLabel="Semanal" itemValue="S"/>
+								</p:selectOneMenu>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Repete a cada</label>
+								<p:selectOneMenu>
+									<f:selectItems
+										value="#{controller.vezes}"
+										var="vez"
+										itemLabel="#{vez}"
+										itemValue="#{vez}"
+									/>
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12">
+								<label>Repete</label>
+								<p:selectManyCheckbox >
+									<f:selectItem itemLabel="Domingo" itemValue="D"/>
+									<f:selectItem itemLabel="Segunda" itemValue="S"/>
+									<f:selectItem itemLabel="Terça" itemValue="T"/>
+									<f:selectItem itemLabel="Quarta" itemValue="Q"/>
+									<f:selectItem itemLabel="Quinta" itemValue="Q"/>
+									<f:selectItem itemLabel="Sexta" itemValue="S"/>
+									<f:selectItem itemLabel="Sábado" itemValue="S"/>	
+								</p:selectManyCheckbox>
+							</div>
+						</h:panelGroup>
+					</div>
+					<div class="modal-footer" style="border-top:0;">
+						<div class="button-section">
+							<p:commandButton 
+								styleClass="btn btn-danger"
+								value="Fechar"
+								onclick="PF('processModal').hide()" 
+							/>
+							<p:commandButton 
+								styleClass="btn btn-primary" 
+								data-dismiss="modal" 
+								action="#{controller.processaEntidade}" 
+								process="processModal"
+								update="panelModal"
+								value="Salvar"
+								id="btnConcluido"
+							/>
+							<p:defaultCommand target="btnConcluido"/>
+						</div>
+					</div>
+				</p:dialog>
+			</h:form>	       
+		</ui:define>
+	</ui:decorate>
+</f:view>

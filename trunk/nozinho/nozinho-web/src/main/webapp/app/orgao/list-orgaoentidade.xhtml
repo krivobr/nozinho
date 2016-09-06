@@ -1,0 +1,98 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<ui:decorate template="/app/assets/layout/template.xhtml">
+		<ui:define name="content">
+			<ui:param name="controller" value="#{orgaoEntidadeController}"></ui:param>
+			<!-- BEGIN CONTENT -->
+			<div class="page-content-wrapper">
+				<!-- BEGIN CONTENT BODY -->
+				<div class="page-content">
+				<!-- BEGIN PAGE HEADER-->
+				<h3 class="page-title"> 
+					Orgão e Entidade
+				</h3>
+					<h:form id="appForm">
+						<!-- BEGIN Portlet PORTLET-->
+						<div class="portlet light portlet-fit portlet-datatable ">
+							<div class="portlet-title">
+								<div class="form-group pull-left">
+									<p:commandButton 
+										styleClass="btn btn-primary" 
+										oncomplete="PF('processModalOrgao').show()" value="Adicionar"
+										actionListener="#{controller.prepareInclude}"
+										update="panelModalOrgao"
+										process="@this"
+									/>
+									<button type="button" class="btn btn-primary" onclick="printFunction()"><i class="fa fa-print" aria-hidden="true"></i></button>					
+								</div>
+								<div class="form-group pull-right">
+									<p:inputText styleClass="search form-control" placeholder="Buscar" onkeyup="$('.globalFilter').val(this.value);$('.globalFilter').keyup();"/>
+								</div>
+								<span class="counter pull-right"></span>
+							</div>
+							<div class="portlet-body">
+								<p:dataTable 
+									var="entidade" 
+									value="#{controller.entidades}"
+									tableStyleClass="table table-striped table-hover table-border results"
+									rowStyleClass="table-row"
+									emptyMessage="#{messages['message.registro.nao.encontrado']}"
+									widgetVar="tableOrgaos"
+									paginator="true"
+									paginatorAlwaysVisible="false"
+									paginatorPosition="bottom"
+									paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="5,10"
+									rows="5"
+								>
+									<f:facet name="header">
+							            <p:outputPanel>
+							                <p:inputText id="globalFilter" onkeyup="PF('tableOrgaos').filter()" styleClass="globalFilter"/>
+							            </p:outputPanel>
+						        	</f:facet>
+									<p:column>
+										<h:selectBooleanCheckbox value="#{controller.checked[entidade.id]}" >
+											<p:ajax event="change" process="@this" update="@none"/>
+										</h:selectBooleanCheckbox>
+									</p:column>
+									<p:column headerText="Nome do Orgão e Entidade" style="width:90%" sortBy="#{entidade.nome}" filterBy="#{entidade.nome}">
+										<h:outputText value="#{entidade.nome}" />
+									</p:column>
+									<p:column>
+										<p:commandLink 
+												styleClass="btn btn-primary btn-edit" 
+												oncomplete="PF('processModalOrgao').show()"
+												update="panelModalOrgao"
+												actionListener="#{controller.prepareUpdate}"
+												process="@this"
+											>
+												<f:setPropertyActionListener value="#{entidade}" target="#{controller.entidade}" />
+												<i class="fa fa-file" aria-hidden="true"></i>
+										</p:commandLink>									
+									</p:column>
+								</p:dataTable>
+								<p:commandButton 
+									id="delete-button" 
+									styleClass="btn btn-danger" 
+									value="Deletar"
+									onclick="PF('modalConfirm').show()"
+								/>
+								<ui:include src="/app/assets/layout/confirmDialog.xhtml"/>
+							</div>
+						</div>
+					</h:form>
+					<ui:include src="dialog-orgaoentidade.xhtml"></ui:include>
+				<!-- END PAGE HEADER-->
+				</div>
+				<!-- END CONTENT BODY -->
+			</div>
+			<!-- END CONTENT -->
+		</ui:define>
+	</ui:decorate>
+</f:view>	

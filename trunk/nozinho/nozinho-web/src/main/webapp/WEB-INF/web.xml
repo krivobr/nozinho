@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<display-name>GabineteNozinho - 0.1</display-name>
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.sun.faces.writeStateAtFormEnd</param-name>
+		<param-value>false</param-value> 
+	</context-param>
+	<context-param>
+		<description>State 
+		saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+<!-- 	<context-param> -->
+<!-- 		<param-name>javax.faces.SEPARATOR_CHAR</param-name> -->
+<!-- 		<param-value>-</param-value> -->
+<!-- 	</context-param> -->
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>resources.application</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.icefaces.messagePersistence</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.mobile.THEME</param-name>
+		<param-value>none</param-value>
+	</context-param>
+	
+	<!-- Allowed Roles -->
+    <security-role>
+        <role-name>ADM</role-name>        
+    </security-role>
+    <security-role>
+    	<role-name>CCT</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CCD</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CCR</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CFR</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>COR</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CPT</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CRG</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CTR</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CPR</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>COF</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CDM</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>AAG</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CUS</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CPF</role-name>
+    </security-role>
+    <security-role>
+    	<role-name>CTD</role-name>
+    </security-role>
+ 	<!-- Protected Areas -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/contato/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CCT</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/cidade/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CCD</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/cargo/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CCR</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/fintelectual/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CFR</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/orgao/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>COR</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/patido/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CPT</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/regional/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CRG</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/tratamento/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CTR</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/profissao/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CPR</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/oficio/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>COF</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/demanda/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CDM</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/agenda/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>AAG</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/usuario/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CUS</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/perfil/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CPF</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Only Logged</web-resource-name>
+            <url-pattern>/app/tipodemanda/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CTD</role-name>
+            <role-name>ADM</role-name>
+        </auth-constraint>
+    </security-constraint>
+	<!-- Filter to get the user name and work with it -->	
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>br.com.nozinho.web.seguranca.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/app/*</url-pattern>
+	</filter-mapping>
+	<!-- Start file upload filter -->
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+	<!-- End file upload filter -->
+	<listener>
+		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
+	<!-- Error pages -->
+	<error-page>
+        <error-code>403</error-code>
+        <location>/index.jsp</location>        
+	</error-page>
+<!-- 	<error-page> -->
+<!-- 		<error-code>500</error-code> -->
+<!-- 		<location>/app/index.xhtml</location> -->
+<!-- 	</error-page> -->
+
+	<!-- Auto scan REST service 
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	-->
+	<!-- this need same with resteasy servlet url-pattern -->
+<!-- 
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/rest</param-value>
+	</context-param>
+	<listener>
+		<listener-class>
+			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+		</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-class>
+			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+-->
+</web-app>

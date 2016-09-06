@@ -1,0 +1,118 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+<!-- 	<link href="#{request.contextPath}/app/assets/css/style-user.css" rel="stylesheet" type="text/css" /> -->
+	<!-- Modal -->	
+	<p:dialog id="minhaContaModal" widgetVar="minhaContaModal" modal="true"
+		header="Minha Conta" width="900" resizable="false"
+		closable="false">
+		<h:form id="panelMinhaConta" styleClass="form-body">
+			<ui:param name="controller" value="#{usuarioController}"></ui:param>
+			<div class="modal-body">
+				<div class="col-md-6">
+					<h:panelGroup id="panelFotoConta">
+						<p:graphicImage
+							width="64"
+							height="64"					 
+							value="#{controller.foto}"
+							rendered="#{not empty controller.entidade.foto}"
+							stream="false"
+							style="float:left;"							
+						/>
+						<p:graphicImage
+							width="64"
+							height="64" 
+							value="/assets/images/avatar.png"
+							rendered="#{empty controller.entidade.foto}"
+							style="float:left;"
+						/>
+					</h:panelGroup>
+					<p:fileUpload 
+						mode="advanced" 
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+						label="Selecionar"
+						auto="true"
+						update="panelFotoConta"
+						fileUploadListener="#{controller.handleFileUpload}"
+						style="float:left;"
+					/>
+				</div>							
+				<div class="form-group col-md-12" style="clear: both;">
+					<label>Login</label>
+					<div class="input-group">
+						<span class="input-group-addon"> 
+							<i class="fa fa-lock"></i>
+						</span>
+						<p:inputText 
+							styleClass="form-control" 
+							placeholder="Login"
+							value="#{controller.entidade.login}" 
+							required="true"
+							requiredMessage="#{messages['message.field.required']}" 
+							id="loginConta" 
+						/>
+					</div>
+					<p:message for="loginConta" />
+				</div>				
+				<div class="form-group col-md-6">
+					<label>Senha</label>
+					<div class="input-group">
+						<span class="input-group-addon"> <i class="fa fa-lock"></i></span>
+						<p:password
+							id="senhaConta"
+							value="#{controller.entidade.senha}"
+							styleClass="form-control"
+							feedback="true"
+							promptLabel="Informe a senha"
+							weakLabel="Fraca"
+							goodLabel="Média"
+							strongLabel="Forte"
+							match="senhaConfirma"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							validatorMessage="Senhas informadas são diferentes" 
+						/>
+					</div>
+					<p:message for="senhaConta" />
+				</div>
+				<div class="form-group col-md-6">
+					<label>Confirmar Senha</label>
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fa fa-user"></i>
+						</span>
+						<p:password
+							id="senhaConfirma"
+							value="#{controller.entidade.senha}"
+							styleClass="form-control"
+							feedback="true"
+							promptLabel="Confirme a senha"
+							weakLabel="Fraca"
+							goodLabel="Média"
+							strongLabel="Forte"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"  
+						/>
+					</div>
+					<p:message for="senhaConfirma"/>
+				</div>
+					
+			</div>
+			<div class="modal-footer" style="border-top: 0; clear: both;">
+				<div class="button-section">
+					<p:commandButton styleClass="btn btn-danger" value="Fechar"
+						onclick="PF('minhaContaModal').hide()" />
+					<p:commandButton styleClass="btn btn-primary" data-dismiss="modal"
+						action="#{controller.changeProfile}" process="panelMinhaConta"
+						update="panelMinhaConta" value="Salvar" id="btnSalvarConta" />
+					<p:defaultCommand target="btnSalvarConta" />
+				</div>
+			</div>
+		</h:form>
+	</p:dialog>
+</f:view>	

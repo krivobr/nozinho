@@ -1,0 +1,42 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+       <p:dialog id="modalConfirm" 
+			widgetVar="modalConfirm" 
+			modal="true" 
+			header="Exclusão de Registro"
+			width="600"
+			resizable="false"
+			closable="false"
+		>
+		  <div class="modal-body">
+			<h:panelGroup id="panelConfirm" layout="block" styleClass="form-body">
+				<div class="form-group col-md-12">
+					<h:outputText value="#{messages['message.delete.confirm']}"/>								
+				</div>											
+			</h:panelGroup>	
+		  </div>
+		  <div class="modal-footer" style="border-top:0;">
+			<div class="button-section">
+				<p:commandButton 
+					styleClass="btn btn-danger"
+					value="Fechar"
+					onclick="PF('modalConfirm').hide()" 
+				/>
+				<p:commandButton 
+					styleClass="btn btn-primary" 
+					data-dismiss="modal" 
+					action="#{controller.confirm}" 
+					process="@this"
+					update="@form"
+					value="Confimar"
+					oncomplete="PF('modalConfirm').hide()"
+				/>
+			</div>
+		  </div>
+		</p:dialog>
+</f:view>

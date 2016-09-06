@@ -1,0 +1,202 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+	
+	<h:form id="panelModalUsuario">
+		<!-- Modal -->	
+		<p:dialog id="processModalUsuario" widgetVar="processModalUsuario" modal="true"
+			header="Cadastrar/Editar Perfil" width="900" resizable="false"
+			closable="false">
+			<h:panelGroup id="panel" layout="block" styleClass="form-body">
+				<div class="modal-body">
+					<div class="col-md-6">
+						<h:panelGroup id="panelFoto">
+							<p:graphicImage
+								width="64"
+								height="64"					 
+								value="#{usuarioController.foto}"
+								rendered="#{not empty usuarioController.entidade.foto}"
+								stream="false"
+								style="float:left;"							
+							/>
+							<p:graphicImage
+								width="64"
+								height="64" 
+								value="/assets/images/avatar.png"
+								rendered="#{empty usuarioController.entidade.foto}"
+								style="float:left;"
+							/>
+						</h:panelGroup>
+						<p:fileUpload 
+							mode="advanced" 
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							label="Selecionar"
+							auto="true"
+							update="panelFoto"
+							fileUploadListener="#{usuarioController.handleFileUpload}"
+							style="float:left;"
+						/>
+					</div>
+					<div class="form-group col-md-12">
+						<label>Perfil</label>
+						<h:selectOneMenu 										
+							value="#{usuarioController.entidade.perfil}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							id="perfil"
+							styleClass="form-control"
+							converter="entidadeConverter"
+						>
+							<f:selectItems 
+								value="#{perfilController.entidades}"
+								var="perfil"
+								itemLabel="#{perfil.nome}"
+								itemValue="#{perfil}"
+							/>
+						</h:selectOneMenu>
+						<p:message for="perfil"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label>Login</label>
+						<div class="input-group">
+							<span class="input-group-addon"> 
+								<i class="fa fa-lock"></i>
+							</span>
+							<p:inputText 
+								styleClass="form-control" 
+								placeholder="Login"
+								value="#{usuarioController.entidade.login}" 
+								required="true"
+								requiredMessage="#{messages['message.field.required']}" 
+								id="login" 
+							/>
+						</div>
+						<p:message for="login" />
+					</div>				
+					<div class="form-group col-md-6">
+						<label>Senha</label>
+						<div class="input-group">
+							<span class="input-group-addon"> <i class="fa fa-lock"></i>
+							</span>
+							<p:password 
+								styleClass="form-control" 
+								placeholder="Senha"
+								value="#{usuarioController.entidade.senha}" 
+								required="true"
+								requiredMessage="#{messages['message.field.required']}" 
+								id="senha"
+								disabled="true"
+							/>
+						</div>
+						<small class="help-block"><h:outputText value="Senha padrão: nozinho123" /></small>
+						<p:message for="senha" />
+					</div>
+					<div class="form-group col-md-6">
+						<label>Contato</label>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-user"></i>
+							</span>
+							<p:autoComplete 
+								id="contato" 
+								multiple="false" 
+					            forceSelection="true"
+					            style="width:100%"
+					            value="#{usuarioController.entidade.contato}"
+					            completeMethod="#{contatoController.findContatosPFByQuery}"
+					            var="convidado"
+					            converter="entidadeConverter"
+					            itemLabel="#{convidado.nome}"
+					            itemValue="#{convidado}"
+					            emptyMessage="Não há contatos cujo nome começa com esta letra"
+					            required="true"
+					            requiredMessage="#{messages['message.field.required']}"
+					            styleClass="form-control"
+					         >
+							</p:autoComplete>
+							<p:commandLink
+								actionListener="#{contatoController.prepareInclude}"
+								update="panelDialog"
+								process="@this"
+								oncomplete="PF('processModalContato').show()"
+								styleClass="input-group-addon"
+							>
+										<i class="fa fa-plus"></i>
+							</p:commandLink>
+						</div>
+						<p:message for="contato"/>
+					</div>
+					<div class="col-md-6">
+						<label>Cargo</label>
+						<div class="input-group">
+							<p:autoComplete 
+									id="cargo" 
+									multiple="false" 
+						            forceSelection="true"
+						            style="width:100%"
+						            value="#{usuarioController.entidade.cargo}"
+						            completeMethod="#{cargoController.findByQuery}"
+						            var="cargo"
+						            converter="entidadeConverter"
+						            itemLabel="#{cargo.nome}"
+						            itemValue="#{cargo}"
+						            emptyMessage="Não há cargos cujo nome começa com esta letra"
+						            styleClass="form-control"
+						         >
+							</p:autoComplete>
+							<p:commandLink
+								actionListener="#{cargoController.prepareInclude}"
+								update="panelModalCargo"
+								process="@this"
+								oncomplete="PF('processModalCargo').show()"
+								styleClass="input-group-addon"
+							>
+								<i class="fa fa-plus"></i>
+							</p:commandLink>
+						</div>
+						<p:message for="cargo"/>
+					</div>						
+				</div>
+				<div class="modal-footer" style="border-top: 0; clear: both;">
+					<div class="button-section">
+						<p:commandButton 
+							styleClass="btn btn-danger" 
+							value="Fechar"
+							onclick="PF('processModalUsuario').hide()"
+							process="@this"
+							update="@none"
+						/>
+						<p:commandButton 
+							styleClass="btn btn-primary" 
+							data-dismiss="modal"
+							action="#{usuarioController.processaEntidade}" 
+							process="processModalUsuario"
+							update="panel" 
+							value="Salvar" 
+							id="btnSalvar"
+							rendered="#{not atalho}" 
+						/>
+						<p:defaultCommand target="btnSalvar" rendered="#{not atalho}" />
+						<p:commandButton 
+							styleClass="btn btn-primary" 
+							data-dismiss="modal"
+							action="#{usuarioController.processaEntidadeAtalho}" 
+							process="processModalUsuario"
+							update="panel, #{update}" 
+							value="Salvar" 
+							id="btnSalvarAtalho"
+							rendered="#{atalho}" 
+						/>
+						<p:defaultCommand target="btnSalvarAtalho" rendered="#{atalho}" />
+						
+					</div>
+				</div>
+			</h:panelGroup>
+		</p:dialog>
+	</h:form>
+</f:view>	

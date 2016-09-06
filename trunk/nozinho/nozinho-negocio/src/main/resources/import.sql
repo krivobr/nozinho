@@ -1,0 +1,45 @@
+--= uf =--
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (1, 'Acre');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (2, 'Alagoas');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (3, 'Amazonas');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (4, 'Amapá');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (5, 'Bahia');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (6, 'Ceará');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (7, 'Distrito Federal');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (8, 'Espírito Santo');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (9, 'Goiás');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (10, 'Maranhão');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (11, 'Minas Gerais');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (12, 'Mato Grosso do Sul');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (13, 'Mato Grosso');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (14, 'Pará');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (15, 'Paraíba');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (16, 'Pernambuco');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (17, 'Piauí');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (18, 'Paraná');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (19, 'Rio de Janeiro');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (20, 'Rio Grande do Norte');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (21, 'Rondônia');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (22, 'Roraima');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (23, 'Rio Grande do Sul');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (24, 'Santa Catarina');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (25, 'Sergipe');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (26, 'São Paulo');
+INSERT INTO uf (iduf, nome_estado_uf) VALUES (27, 'Tocantins');
+
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(1, 'CPR', 'Cadastro Profissão');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(2, 'CTR', 'Cadastro Tratamento');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(3, 'CRG', 'Cadastro Regional');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(4, 'CPT', 'Cadastro Partido');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(5, 'COR', 'Cadastro Orgão/Entidades');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(6, 'CFR', 'Cadastro Formação Intelectual');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(7, 'CCR', 'Cadastro Cargos e Funções');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(8, 'CCD', 'Cadastro Cidades');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(9, 'CCT', 'Cadastro Contato');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(10, 'COF', 'Cadastro Ofícios');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(11, 'CDM', 'Cadastro Demanda');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(12, 'AAG', 'Acesso Agenda');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(13, 'CPF', 'Cadastro Perfil');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(14, 'CUS', 'Cadastro Usuário');
+INSERT INTO permissao(idpermissao, valor_permissao, nome_permissao) VALUES(15, 'ADM', 'Administrador');
+

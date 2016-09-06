@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ar="http://mfframework.com.br/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<li class="dropdown">
+		<ar:dropdown label="#{intercionalizacaoController.currentLocalidade.sigla}"
+					 image="/assets/img/#{intercionalizacaoController.currentLocalidade.sigla}.gif">
+			<ui:repeat var="localidade" value="#{intercionalizacaoController.localidades}">
+			<ar:dropdownItem label="#{localidade.sigla}" 
+							 action="#{intercionalizacaoController.alterarLocalidade}"
+							 image="/assets/img/#{localidade.sigla}.gif"
+							 rendered="#{localidade.sigla != intercionalizacaoController.currentLocalidade.sigla}"
+							 target="#{intercionalizacaoController.localidade}" 
+							 value="#{localidade.sigla}"/>
+			</ui:repeat>
+		</ar:dropdown>
+	</li>
+</ui:composition>

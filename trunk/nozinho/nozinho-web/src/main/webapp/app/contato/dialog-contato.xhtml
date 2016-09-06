@@ -1,0 +1,842 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+
+<!-- Modal -->
+		<h:form id="panelDialog">						
+			<p:dialog id="processModalContato" 
+				widgetVar="processModalContato" 
+				modal="true" 
+				header="Cadastrar/Editar Contato"
+				width="900"
+				resizable="false"	
+				draggable="false"
+			>
+			  <div class="ui-fluid" style="max-height:600px;overflow:auto">
+				<h:panelGroup id="panelModal" layout="block" styleClass="form-body">
+					<div class="ui-g-12">
+						<p:selectOneButton value="#{contatoController.entidade.tipoPessoa}">
+							<f:selectItems 
+								value="#{contatoController.tiposPessoa}" 
+								var="pessoa" 
+								itemLabel="#{pessoa.descricao}" 
+								itemValue="#{pessoa}"
+							/>
+							<p:ajax event="change" process="@this" update="panelModal"/>
+						</p:selectOneButton>
+					</div>
+					<h:panelGroup layout="block" id="panelPessoaFisica" rendered="#{contatoController.entidade.tipoPessoa == 'PESSOA_FISICA'}">							
+					  	<h3 class="cadastro-header font-blue">Dados Pessoais</h3>
+						<div class="col-md-2">
+							<label>Tratamento</label>
+								<h:selectOneMenu 										
+									value="#{contatoController.entidade.tratamento}"
+									required="true"
+									requiredMessage="#{messages['message.field.required']}"
+									id="tratamento"
+									converter="entidadeConverter"
+									styleClass="form-control"
+								>
+									<f:selectItems 
+										value="#{tratamentoController.entidades}"
+										var="tratamento"
+										itemLabel="#{tratamento.nome}"
+										itemValue="#{tratamento}"
+									/>
+								</h:selectOneMenu> 
+							<p:message for="tratamento"/>
+						</div>											
+					
+						<div class="form-group col-md-10">
+							<label>Nome do Contato</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText 
+									styleClass="form-control" 
+									placeholder="Nome" 
+									value="#{contatoController.entidade.nome}"
+									required="true"
+									requiredMessage="#{messages['message.field.required']}"
+									id="nome"
+								/> 
+							</div>
+							<p:message for="nome"/>
+						</div>
+						
+						<div class="col-md-3">
+							<label>Sexo</label>
+							<h:selectOneMenu 										
+								value="#{contatoController.entidade.sexo}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+								id="sexo"
+								styleClass="form-control"
+							>
+								<f:selectItems 
+									value="#{contatoController.listaSexo}"
+									var="sexo"
+									itemLabel="#{sexo.descricao}"
+									itemValue="#{tratamento}"
+								/>
+							</h:selectOneMenu>								
+							<p:message for="sexo"/>
+						</div>
+						<div class="form-group col-md-3">
+							<label>Data de nascimento</label>
+							<div class="input-group">
+								<p:inputMask 
+									mask="99/99/9999"
+									value="#{contatoController.entidade.dataNascimento}"
+									id="dataNascimento"
+									styleClass="form-control"
+									placeholder="DD/MM/AAAA"
+								>
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:inputMask>
+							</div>
+							<p:message for="dataNascimento"/>
+						</div>
+						<div class="form-group col-md-6">
+							<label>Apelido</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="apelido"
+									value="#{contatoController.entidade.apelido}"
+									styleClass="form-control"		
+								/>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label>Partido</label>
+							<div class="input-group">
+								<h:selectOneMenu 										
+									value="#{contatoController.entidade.partido}"
+									id="partido"
+									converter="entidadeConverter"
+									styleClass="form-control"
+								>
+									<f:selectItems 
+										value="#{partidoController.entidades}"
+										var="partido"
+										itemLabel="#{partido.sigla}"
+										itemValue="#{partido}"
+									/>
+								</h:selectOneMenu>
+								<p:commandLink
+										actionListener="#{partidoController.prepareInclude}"
+										update="panelModalPartido:processModalPartido"
+										process="@this"
+										oncomplete="PF('processModalPartido').show()"
+										styleClass="input-group-addon"
+									>
+									<i class="fa fa-plus"></i>
+								</p:commandLink> 
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label>Formação Intelectual</label>
+							<div class="input-group">
+								<h:selectOneMenu 										
+									value="#{contatoController.entidade.formacaoIntelectual}"
+									required="true"
+									requiredMessage="#{messages['message.field.required']}"
+									id="formacaoIntelectual"
+									converter="entidadeConverter"
+									styleClass="form-control"
+								>
+									<f:selectItems 
+										value="#{formacaoIntelectualController.entidades}"
+										var="formacaoIntelectual"
+										itemLabel="#{formacaoIntelectual.nome}"
+										itemValue="#{formacaoIntelectual}"
+									/>
+								</h:selectOneMenu>
+								<p:commandLink
+									actionListener="#{formacaoIntelectualController.prepareInclude}"
+									update="panelModalFintelec"
+									process="@this"
+									oncomplete="PF('processModalFintelec').show()"
+									styleClass="input-group-addon"
+								>
+									<i class="fa fa-plus"></i>
+								</p:commandLink> 
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label>Profissão</label>
+							<div class="input-group">
+								<h:selectOneMenu 										
+									value="#{contatoController.entidade.profissao}"
+									id="profissao"
+									converter="entidadeConverter"
+									styleClass="form-control"
+								>
+									<f:selectItems 
+										value="#{profissaoController.entidades}"
+										var="profissao"
+										itemLabel="#{profissao.nome}"
+										itemValue="#{profissao}"
+									/>
+								</h:selectOneMenu>
+								<p:commandLink
+									actionListener="#{profissaoController.prepareInclude}"
+									update="panelModalProfissao"
+									process="@this"
+									oncomplete="PF('processModalProfissao').show()"
+									styleClass="input-group-addon"
+								>
+									<i class="fa fa-plus"></i>
+								</p:commandLink> 
+							</div>
+						</div>							
+						<div class="form-group col-md-6">
+							<label>CPF</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputMask 
+									mask="999.999.999-99"
+									id="cpf"
+									value="#{contatoController.entidade.cpf}"
+									styleClass="form-control"
+									converter="converter.cpfConverter"
+									validator="validator.cpfValidador"
+								>
+								</p:inputMask>
+							</div>
+							<p:message for="cpf"/>
+						</div>
+						<div class="form-group col-md-6">
+							<label>RG</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="identidade"
+									value="#{contatoController.entidade.identidade}"
+									styleClass="form-control"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label>Título de Eleitor</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="tituloEleitor"
+									value="#{contatoController.entidade.tituloEleitor}"
+									styleClass="form-control"
+									maxlength="12"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label>Zona</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputMask
+									id="zona"
+									value="#{contatoController.entidade.zona}"
+									styleClass="form-control"
+									mask="9999"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-3">
+							<label>Seção</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputMask
+									id="secao"
+									value="#{contatoController.entidade.secao}"
+									styleClass="form-control"
+									mask="9999"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label>Nome do Pai</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="nomePai"
+									value="#{contatoController.entidade.nomePai}"
+									styleClass="form-control"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label>Nome da Mãe</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="nomeMae"
+									value="#{contatoController.entidade.nomeMae}"
+									styleClass="form-control"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label>Nome do Cônjuge</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText
+									id="nomeConjuge"
+									value="#{contatoController.entidade.nomeConjuge}"
+									styleClass="form-control"
+								/>
+							</div>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{contatoController.entidade.tipoPessoa == 'PESSOA_JURIDICA'}">
+						<h3 class="cadastro-header font-blue">Dados Pessoais</h3>
+						<div class="ui-g-12">
+							<label>Nome da Empresa</label>
+							<p:inputText
+								value="#{contatoController.entidade.nome}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+								id="nomeEmpresa"
+							/>
+							<p:message for="nomeEmpresa"/>
+						</div>
+						<div class="ui-g-2">
+							<label>Tratamento</label>
+								<p:selectOneMenu 										
+									value="#{contatoController.entidade.tratamento}"
+									required="true"
+									requiredMessage="#{messages['message.field.required']}"
+									id="tratamentoResp"
+									converter="entidadeConverter"
+								>
+									<f:selectItems 
+										value="#{tratamentoController.entidades}"
+										var="tratamento"
+										itemLabel="#{tratamento.nome}"
+										itemValue="#{tratamento}"
+									/>
+								</p:selectOneMenu> 
+							<p:message for="tratamentoResp"/>
+						</div>											
+					
+						<div class="ui-g-10">
+							<label>Nome do Responsável</label>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="fa fa-user"></i>
+								</span>
+								<p:inputText 
+									placeholder="Nome" 
+									value="#{contatoController.entidade.nomeResponsavel}"
+									required="true"
+									requiredMessage="#{messages['message.field.required']}"
+									id="nomeResp"
+								/> 
+							</div>
+							<p:message for="nomeResp"/>
+						</div>
+						<div class="ui-g-6">
+							<label>Cargo</label>
+							<p:selectOneMenu 
+								value="#{contatoController.entidade.cargo}"
+								converter="entidadeConverter"
+								id="cargoResp"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+							>	
+								<f:selectItems 
+									value="#{cargoController.entidades}"
+									var="cargo"
+									itemLabel="#{cargo.nome}"
+									itemValue="#{cargo}"
+								/>
+							</p:selectOneMenu>
+							<p:message for="cargoResp"/>
+						</div>
+						<div class="ui-g-6">
+							<label>CNPJ</label>
+							<p:inputMask 
+								mask="99.999.999/9999-99"
+								value="#{contatoController.entidade.cpf}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+								id="cnpj"
+								converter="converter.cnpjConverter"
+								validator="validator.cnpjValidator"
+							/>
+							<p:message for="cnpj"/>
+						</div>
+					</h:panelGroup>
+					<h3 class="cadastro-header font-blue" style="clear:both;">Endereço</h3>
+					<div class="form-group col-md-12">
+						<p:commandLink 
+							onclick="PF('enderecoModal').show()" 
+							update="panelEnderecoModal" 
+							process="@this"
+							actionListener="#{contatoController.enderecoController.prepareInclude}"
+						>
+							<i class="fa fa-plus"/>
+						</p:commandLink>
+					</div>
+					<div class="form-group col-md-12">
+						<p:dataTable
+							value="#{contatoController.entidade.enderecos}"
+							var="endereco"
+							tableStyleClass="table table-striped table-hover table-border results"
+							rowStyleClass="table-row"
+							emptyMessage="Não há endereços cadastrados"
+							id="tableEnderecos"
+						>
+							<p:column headerText="Tipo">
+								<h:outputText value="#{endereco.tipoEndereco}"/>
+							</p:column>
+							<p:column headerText="Logradouro">
+								<h:outputText value="#{endereco.endereco}" />
+							</p:column>
+							<p:column headerText="CEP">
+								<h:outputText value="#{endereco.cep}" converter="converter.cepConverter"/>
+							</p:column>
+							<p:column headerText="Bairro">
+								<h:outputText value="#{endereco.bairro}" />
+							</p:column>
+							<p:column headerText="Cidade">
+								<h:outputText value="#{endereco.cidade.nome}" />
+							</p:column>
+							<p:column style="width:5%">
+								<p:commandLink
+									process="@this"
+									update="@this"
+									oncomplete="PF('modalConfirmDelEnd').show()"
+								>
+									<f:setPropertyActionListener value="#{endereco}" target="#{contatoController.enderecoController.entidade}" />
+									<i class="fa fa-trash"/>
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<h3 class="cadastro-header font-blue" style="clear:both;">Contato</h3>
+					<div class="form-group col-md-12">
+						<p:commandLink 
+							onclick="PF('contatoModal').show()"
+							update="panelContatoModal" 
+							process="@this"
+							actionListener="#{contatoController.formaController.prepareInclude}"
+						>
+							<i class="fa fa-plus"/>
+						</p:commandLink>
+					</div>
+					<div class="form-group col-md-12">
+						<p:dataTable
+							tableStyleClass="table table-striped table-hover table-border results"
+							rowStyleClass="table-row"
+							emptyMessage="Não há endereços cadastrados"
+							value="#{contatoController.entidade.contatosForma}"
+							var="forma"
+							id="tableContatos"
+						>
+							<p:column headerText="Tipo do Contato" style="width:20%">
+								<h:outputText value="#{forma.tipoContato.descricao}" />
+							</p:column>
+							<p:column headerText="Contato">
+								<h:outputText value="#{forma.nome}" />
+							</p:column>
+							<p:column style="width:5%">
+								<p:commandLink
+									process="@this"
+									update="@this"
+									oncomplete="PF('modalConfirmDelCont').show()"
+								>
+									<f:setPropertyActionListener value="#{forma}" target="#{contatoController.formaController.entidade}" />
+									<i class="fa fa-trash"/>
+								</p:commandLink>
+							</p:column>
+						</p:dataTable>
+					</div>							
+				</h:panelGroup>	
+			  </div>
+			  <div class="modal-footer" style="border-top:0;clear: both;">
+				<div class="button-section">
+					<p:commandButton 
+						styleClass="btn btn-danger"
+						value="Fechar"
+						onclick="PF('processModalContato').hide()" 
+						process="@this"
+						update="@none"
+					/>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						data-dismiss="modal" 
+						action="#{contatoController.processaEntidade}" 
+						process="processModalContato"
+						update="panelModal"
+						value="Salvar"
+						id="btnSalvar"
+						rendered="#{not atalho}"
+					/>
+					<p:defaultCommand rendered="#{not atalho}" target="btnSalvar"/>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						data-dismiss="modal" 
+						action="#{contatoController.processaEntidadeAtalho}" 
+						process="processModalContato"
+						update="panelDialog:panelModal, #{update}"
+						value="Salvar"
+						id="btnSalvarAtalho"
+						rendered="#{atalho}"
+					>
+						<f:setPropertyActionListener value="#{bean}" target="#{contatoController.caller}"/>
+					</p:commandButton>
+					<p:defaultCommand rendered="#{atalho}" target="btnSalvarAtalho"/>
+				</div>
+			  </div>
+			</p:dialog>
+			<p:dialog id="enderecoModal" 
+				widgetVar="enderecoModal" 
+				modal="true" 
+				header="Cadastrar/Editar Endereço"
+				width="900"
+				resizable="false"
+				appendTo="@form"						
+			>
+			  <div class="modal-body" style="max-height:600px;overflow:auto">
+				<h:panelGroup id="panelEnderecoModal" layout="block" styleClass="form-body">
+					<div class="form-group col-md-12">
+						<p:messages globalOnly="true"/>
+					</div>
+					<div class="form-group col-md-4">
+						<label>Tipo Endereço</label>
+						<h:selectOneMenu 										
+							value="#{contatoController.enderecoController.entidade.tipoEndereco}"
+							id="tipoEndereco"
+							styleClass="form-control"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+						>
+							<f:selectItems 
+								value="#{contatoController.enderecoController.tiposEnderecoEnum}"
+								var="tipoEndereco"
+								itemLabel="#{tipoEndereco.descricao}"
+								itemValue="#{tipoEndereco}"
+							/>
+						</h:selectOneMenu>
+						<p:message for="cidade"/>
+					</div>
+					<div class="form-group col-md-8">
+						<label>Logradouro</label>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-home"></i>
+							</span>
+							<p:inputText
+								id="logradouro"
+								styleClass="form-control" 
+								placeholder="Logradouro"
+								value="#{contatoController.enderecoController.entidade.endereco}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+							/> 
+						</div>
+						<p:message for="logradouro"/>
+					</div>
+					<div class="form-group col-md-4">
+						<label>Número</label>
+						<p:inputNumber
+							id="numero"
+							styleClass="form-control"
+							placeholder="Número"
+							value="#{contatoController.enderecoController.entidade.numero}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							decimalPlaces="0"
+						/>
+					</div>
+					<div class="form-group col-md-4">
+						<label>Complemento</label>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-home"></i>
+							</span>
+							<p:inputText
+								id="complemento"
+								styleClass="form-control" 
+								placeholder="Complemento"
+								value="#{contatoController.enderecoController.entidade.complemento}"
+							/> 
+						</div>
+					</div>
+					<div class="form-group col-md-4">
+						<label>CEP</label>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-home"></i>
+							</span>
+							<p:inputMask
+								id="cep"
+								styleClass="form-control" 
+								placeholder="CEP"
+								value="#{contatoController.enderecoController.entidade.cep}"
+								mask="99.999-999"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+							>
+								<f:converter converterId="converter.cepConverter"/>
+							</p:inputMask> 
+						</div>
+						<p:message for="cep"/>
+					</div>							
+					<div class="form-group col-md-6" style="clear:both;">
+						<label>Bairro</label>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="fa fa-home"></i>
+							</span>
+							<p:inputText
+								id="bairro"
+								styleClass="form-control" 
+								placeholder="Bairro"
+								value="#{contatoController.enderecoController.entidade.bairro}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+							/> 
+						</div>
+						<p:message for="bairro"/>
+					</div>
+					<div class="col-md-6">
+						<label>Cidade</label>								
+						<h:selectOneMenu 										
+							value="#{contatoController.enderecoController.entidade.cidade}"
+							id="cidade"
+							converter="entidadeConverter"
+							styleClass="form-control"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+						>
+							<f:selectItems 
+								value="#{cidadeController.entidades}"
+								var="cidade"
+								itemLabel="#{cidade.nome}"
+								itemValue="#{cidade}"
+							/>
+						</h:selectOneMenu>
+						<p:message for="cidade"/>								
+					</div>
+				</h:panelGroup>
+			  </div>
+			  <div class="modal-footer" style="border-top:0;clear: both;">
+				<div class="button-section">
+					<p:commandButton 
+						styleClass="btn btn-danger"
+						value="Fechar"
+						onclick="PF('enderecoModal').hide()" 
+					/>
+					<p:commandButton 
+						styleClass="btn btn-primary"
+						action="#{contatoController.processaContatoEndereco}"
+						process="panelEnderecoModal @this"
+						update="panelEnderecoModal,tableEnderecos"
+						value="Salvar"
+						id="enderecoSalvar"
+					/>
+					<p:defaultCommand target="enderecoSalvar"/>
+				</div>
+			  </div>
+		    </p:dialog>
+		    <p:dialog id="contatoModal" 
+				widgetVar="contatoModal" 
+				modal="true" 
+				header="Cadastrar/Editar Contato"
+				width="900"
+				resizable="false"						
+			>
+			  <div class="modal-body" style="max-height:600px;overflow:auto">
+			 	<h:panelGroup id="panelContatoModal" layout="block" styleClass="form-body">
+			 		<div class="col-md-12">
+			 			<p:messages/>
+			 		</div>
+			 		<div class="col-md-2">
+						<label>Tipo de Contato</label>
+							<h:selectOneMenu 										
+								value="#{contatoController.formaController.entidade.tipoContato}"
+								required="true"
+								requiredMessage="#{messages['message.field.required']}"
+								id="tipoContato"
+								styleClass="form-control"
+							>
+								<f:selectItems 
+									value="#{contatoController.formaController.tiposContato}"
+									var="tipoContato"
+									itemLabel="#{tipoContato.descricao}"
+									itemValue="#{tipoContato}"
+								/>
+								<p:ajax event="change" process="@this" update="panelContatoModal"/>
+							</h:selectOneMenu> 
+						<p:message for="tratamento"/>
+					</div>
+					<div class="form-group col-md-10">
+						<label>Forma Contato</label>
+						<p:inputText
+							styleClass="form-control"
+							value="#{contatoController.formaController.entidade.nome}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							rendered="#{contatoController.formaController.entidade.tipoContato != 'TELEFONE'}"
+						/>
+						<p:inputMask 
+							styleClass="form-control"
+							mask="(99)9999-9999"
+							value="#{contatoController.formaController.entidade.nome}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							rendered="#{contatoController.formaController.entidade.tipoContato == 'TELEFONE' and controller.tipoTelefone == 'F'}"
+						/>
+						<p:inputMask 
+							styleClass="form-control"
+							mask="(99)99999-9999"
+							value="#{contatoController.formaController.entidade.nome}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							rendered="#{contatoController.formaController.entidade.tipoContato == 'TELEFONE' and controller.tipoTelefone == 'C'}"
+						/>
+						<p:selectOneRadio value="#{contatoController.tipoTelefone}" rendered="#{contatoController.formaController.entidade.tipoContato == 'TELEFONE'}">
+							<f:selectItem itemValue="F" itemLabel="Fixo"/>
+							<f:selectItem itemValue="C" itemLabel="Celular"/>
+							<p:ajax event="change" process="@this" update="panelContatoModal"/>
+						</p:selectOneRadio>
+					</div>											
+			 	</h:panelGroup>
+			 </div>
+			 <div class="modal-footer" style="border-top:0;clear: both;">
+				<div class="button-section">
+					<p:commandButton 
+						styleClass="btn btn-danger"
+						value="Fechar"
+						onclick="PF('contatoModal').hide()"
+						process="@this"
+						update="@none"
+					/>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						action="#{contatoController.processaFormaContato}" 
+						process="panelContatoModal @this"
+						update="tableContatos, panelContatoModal"
+						value="Salvar"
+						id="contatoSalvar"
+					/>
+					<p:defaultCommand target="contatoSalvar"/>
+				</div>
+			  </div>
+		    </p:dialog>
+		<p:dialog id="modalConfirmDelEnd" 
+			widgetVar="modalConfirmDelEnd" 
+			modal="true" 
+			header="Exclusão de Registro"
+			width="600"
+			resizable="false"
+			closable="false"
+		>
+		  <div class="modal-body">
+			<h:panelGroup id="panelConfirmDelEnd" layout="block" styleClass="form-body">
+				<div class="form-group col-md-12">
+					<h:outputText value="#{messages['message.delete.confirm']}"/>								
+				</div>											
+			</h:panelGroup>	
+		  </div>
+		  <div class="modal-footer" style="border-top:0;">
+			<div class="button-section">
+				<p:commandButton
+					type="button" 
+					styleClass="btn btn-danger"
+					value="Fechar"
+					process="@none"
+					update="@none"
+					onclick="PF('modalConfirmDelEnd').hide()" 
+				/>
+				<p:commandButton 
+					styleClass="btn btn-primary" 
+					data-dismiss="modal" 
+					actionListener="#{contatoController.deleteEndereco}" 
+					process="@this"
+					update="tableEnderecos"
+					value="Confimar"
+					oncomplete="PF('modalConfirmDelEnd').hide()"
+				/>
+			</div>
+		  </div>
+		</p:dialog>
+		<p:dialog id="modalConfirmDelCont" 
+			widgetVar="modalConfirmDelCont" 
+			modal="true" 
+			header="Exclusão de Registro"
+			width="600"
+			resizable="false"
+			closable="false"
+		>
+		  <div class="modal-body">
+			<h:panelGroup id="panelConfirmDelCont" layout="block" styleClass="form-body">
+				<div class="form-group col-md-12">
+					<h:outputText value="#{messages['message.delete.confirm']}"/>								
+				</div>											
+			</h:panelGroup>	
+		  </div>
+		  <div class="modal-footer" style="border-top:0;">
+			<div class="button-section">
+				<p:commandButton
+					type="button" 
+					styleClass="btn btn-danger"
+					value="Fechar"
+					onclick="PF('modalConfirmDelCont').hide()" 
+				/>
+				<p:commandButton 
+					styleClass="btn btn-primary" 
+					data-dismiss="modal" 
+					actionListener="#{contatoController.deleteContato}" 
+					process="@this"
+					update="tableContatos"
+					value="Confimar"
+					oncomplete="PF('modalConfirmDelCont').hide()"
+				/>
+			</div>
+		  </div>
+		</p:dialog>
+	</h:form>
+	<ui:include src="/app/partido/dialog-partido.xhtml">
+		<ui:param name="atalho" value="true"></ui:param>
+		<ui:param name="update" value="panelDialog:partido"/>
+		<ui:param name="bean" value="#{contatoController}"/>
+	</ui:include>
+	<ui:include src="/app/fintelectual/dialog-fintelectual.xhtml">
+		<ui:param name="atalho" value="true"></ui:param>
+		<ui:param name="update" value="panelDialog:formacaoIntelectual"/>
+		<ui:param name="bean" value="#{contatoController}"/>
+	</ui:include>
+	<ui:include src="/app/profissao/dialog-profissao.xhtml">
+		<ui:param name="atalho" value="true"></ui:param>
+		<ui:param name="update" value="panelDialog:profissao"/>
+		<ui:param name="bean" value="#{contatoController}"/>
+	</ui:include>	
+		
+</f:view>	

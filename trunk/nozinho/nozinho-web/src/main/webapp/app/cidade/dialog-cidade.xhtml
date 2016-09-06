@@ -1,0 +1,81 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+
+<!-- Modal -->
+<h:form id="panelModal">
+	<p:dialog id="processModal" 
+		widgetVar="processModal" 
+		modal="true" 
+		header="Cadastrar/Editar Cidade"
+		width="900"
+		resizable="false"
+		closable="false"
+	>
+	  <div class="modal-body">
+		<h:panelGroup id="panel" layout="block" styleClass="form-body">
+			<div class="form-group col-md-8">
+				<label>Nome da Cidade</label>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-home"></i>
+					</span>
+					<p:inputText 
+						styleClass="form-control" 
+						placeholder="Nome" 
+						value="#{controller.entidade.nome}"
+						required="true"
+						requiredMessage="#{messages['message.field.required']}"
+						id="nome"
+					/> 
+				</div>
+				<p:message for="nome"/>
+			</div>													
+			<div class="col-md-4">
+				<label>Estado</label>
+				<h:selectOneMenu 										
+					value="#{controller.entidade.uf}"
+					required="true"
+					requiredMessage="#{messages['message.field.required']}"
+					id="uf"
+					converter="entidadeConverter"
+					styleClass="form-control"
+				>
+					<f:selectItems 
+						value="#{controller.listaUfs}"
+						var="uf"
+						itemLabel="#{uf.nome}"
+						itemValue="#{uf}"
+					/>
+				</h:selectOneMenu> 
+				<p:message for="uf"/>
+			</div>											
+		</h:panelGroup>	
+	  </div>
+	  <div class="modal-footer" style="border-top:0;clear: both;">
+		<div class="button-section">
+			<p:commandButton 
+				styleClass="btn btn-danger"
+				value="Fechar"
+				onclick="PF('processModal').hide()" 
+			/>
+			<p:commandButton 
+				styleClass="btn btn-primary" 
+				data-dismiss="modal" 
+				action="#{controller.processaEntidade}" 
+				process="processModal"
+				update="panel"
+				value="Salvar"
+				id="btnSalvar"
+			/>
+			<p:defaultCommand target="btnSalvar"/>
+		</div>
+	  </div>
+	</p:dialog>
+</h:form>
+</f:view>	

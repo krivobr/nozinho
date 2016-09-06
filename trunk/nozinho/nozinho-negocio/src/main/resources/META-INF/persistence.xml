@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="NozinhoPU" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/dataSources/NozinhoDS</jta-data-source>
+		
+ 		<class>br.com.nozinho.model.TipoAtendimento</class>
+ 		<class>br.com.nozinho.model.Profissao</class>
+ 		<class>br.com.nozinho.model.Cargo</class>
+ 		<class>br.com.nozinho.model.FormacaoIntelectual</class>
+ 		<class>br.com.nozinho.model.Tratamento</class>
+ 		<class>br.com.nozinho.model.Uf</class>
+ 		<class>br.com.nozinho.model.Cidade</class>
+ 		<class>br.com.nozinho.model.Regional</class>
+ 		<class>br.com.nozinho.model.OrgaoEntidade</class>
+ 		<class>br.com.nozinho.model.Partido</class>
+ 		<class>br.com.nozinho.model.Contato</class>
+ 		<class>br.com.nozinho.model.Usuario</class>
+ 		<class>br.com.nozinho.model.Perfil</class>
+ 		<class>br.com.nozinho.model.TipoDemanda</class>
+ 		<class>br.com.nozinho.model.Demanda</class>
+ 		<class>br.com.nozinho.model.Empresa</class>
+ 		<class>br.com.nozinho.model.DemandaStatus</class>
+ 		<class>br.com.nozinho.model.ContatoEndereco</class>
+ 		<class>br.com.nozinho.model.ContatoForma</class>
+ 		<class>br.com.nozinho.model.DemandaHistorico</class>
+ 		<class>br.com.nozinho.model.Oficio</class>
+ 		<class>br.com.nozinho.model.ProvidenciaAdotada</class>
+ 		<class>br.com.nozinho.model.RetornoSolicitacao</class>
+ 		<class>br.com.nozinho.model.EncaminhamentoResposta</class>
+ 		<class>br.com.nozinho.model.DemandaAnexo</class>
+ 		<class>br.com.nozinho.model.Permissao</class>
+ 		<class>br.com.nozinho.model.Notificacao</class>
+		
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="update" /> -->
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
+			<property name="hibernate.format_sql" value="true" />
+<!-- 			<property name="hibernate.show_sql" value="true" /> -->
+			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
+			<property name="hibernate.connection.useUnicode" value="true" />
+		</properties>
+	</persistence-unit>
+		
+</persistence>

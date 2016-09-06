@@ -1,0 +1,125 @@
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<h:head>
+        <meta charset="utf-8" />
+        <title>Gabinete | Login</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+<!--         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all;" rel="stylesheet" type="text/css" /> -->
+        <link href="assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <link href="assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link href="assets/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="assets/css/login.min.css" rel="stylesheet" type="text/css" />
+		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" href="favicon.ico" /> 
+    </h:head>
+    <!-- END HEAD -->
+
+    <h:body class=" login">
+        <!-- BEGIN LOGO -->
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/images/gabinete-logo.png" alt="" /> </a>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN LOGIN -->
+        <div class="content">
+            <!-- BEGIN LOGIN FORM -->
+            <h:form id="formLogin" styleClass="login-form">
+            	<p:focus for="username"/>
+                <h3 class="form-title font-dark">Acesso</h3>
+                <p:messages globalOnly="true"/>
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">Usuário</label>
+                    <p:inputText 
+                    	styleClass="form-control form-control-solid placeholder-no-fix" 
+                    	type="text" 
+                    	placeholder="Usuário" 
+                    	id="username"
+                    	required="true"
+                    	requiredMessage="#{messages['message.user.required']}"
+                    	value="#{loginController.entidade.login}" 
+                    />
+                    <p:message for="username"/> 
+                </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Senha</label>
+                    <p:password 
+                    	styleClass="form-control form-control-solid placeholder-no-fix" 
+                    	type="password" 
+                    	placeholder="Senha" 
+                    	id="password"
+                    	required="true"
+                    	requiredMessage="#{messages['message.pass.required']}"
+                    	value="#{loginController.entidade.senha}" 
+                    />
+                    <p:message for="password"/>
+                </div>
+                <div class="form-actions">
+                	<p:commandButton
+                		action="#{loginController.login}"
+                		process="@form"
+                		update="@form"
+                		value="Entrar"
+                		styleClass="btn green uppercase"
+                		id="btnEntar"
+                		ajax="false"	
+                	/>
+                	<p:defaultCommand target="formLogin:btnEntar"/>
+                </div>
+            </h:form>
+            <!-- END LOGIN FORM -->
+        </div>
+        <!--[if lt IE 9]>
+		<script src="assets/global/plugins/respond.min.js"></script>
+		<script src="assets/global/plugins/excanvas.min.js"></script> 
+		<![endif]-->
+        <!-- BEGIN CORE PLUGINS -->
+        <script src="assets/js/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/js/js.cookie.min.js" type="text/javascript"></script>
+        <script src="assets/js/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+        <script src="assets/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="assets/js/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="assets/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL SCRIPTS -->
+        <script src="assets/js/app.min.js" type="text/javascript"></script>
+        <script>
+			var jq = $.noConflict();
+	 	</script>
+        
+        <!-- END THEME GLOBAL SCRIPTS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="assets/js/login.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL SCRIPTS -->
+        <!-- BEGIN THEME LAYOUT SCRIPTS -->
+        <!-- END THEME LAYOUT SCRIPTS -->
+    </h:body>	
+	
+</h:html>

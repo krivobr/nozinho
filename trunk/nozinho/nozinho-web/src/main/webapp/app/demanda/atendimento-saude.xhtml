@@ -1,0 +1,455 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+        
+        <div class="form-group col-md-8">
+			<label>Beneficiário</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete 
+						id="beneficiarioAtendimento" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.contatoInteressado}"
+			            completeMethod="#{contatoController.findContatosByQuery}"
+			            var="beneficiario"
+			            converter="entidadeConverter"
+			            itemLabel="#{beneficiario.nome}"
+			            itemValue="#{beneficiario}"
+			            emptyMessage="Não há beneficiários cujo nome começa com esta letra"
+			            required="true"
+			            requiredMessage="#{messages['message.field.required']}"
+			            styleClass="form-control"
+			         >
+				</p:autoComplete>
+				<p:commandLink
+						actionListener="#{contatoController.prepareInclude}"
+						update="panelDialog"
+						process="@this"
+						oncomplete="PF('processModalContato').show()"
+						styleClass="input-group-addon"
+					>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="beneficiarioAtendimento" target="#{contatoController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:beneficiarioAtendimento" target="#{contatoController.update}"/>
+				</p:commandLink>	
+			</div>
+			<p:message for="beneficiarioAtendimento"/>
+		</div>
+		<div class="form-group col-md-4">
+			<label>Valor</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-usd"></i>
+				</span>
+				<p:inputNumber
+					id="valorEmenda"
+					value="#{controller.entidade.valor}"
+					styleClass="form-control"
+					decimalPlaces="2"
+					decimalSeparator="," 
+					thousandSeparator="."
+				>
+				</p:inputNumber>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<label>Cargo Pretendido</label>
+			<p:autoComplete 
+					id="cargoPretendido" 
+					multiple="false" 
+		            forceSelection="true"
+		            style="width:100%"
+		            value="#{controller.entidade.cargoPretendido}"
+		            completeMethod="#{cargoController.findByQuery}"
+		            var="cargo"
+		            converter="entidadeConverter"
+		            itemLabel="#{cargo.nome}"
+		            itemValue="#{cargo}"
+		            emptyMessage="Não há cargos cujo nome começa com esta letra"
+		            styleClass="form-control"
+		         >
+				</p:autoComplete>
+		</div>
+		<div class="form-group col-md-6">
+			<label>Encaminhar para o Órgão</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete 
+						id="orgao" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.orgaoEntidade}"
+			            completeMethod="#{orgaoEntidadeController.findOrgaosByQuery}"
+			            var="orgao"
+			            converter="entidadeConverter"
+			            itemLabel="#{orgao.nome}"
+			            itemValue="#{orgao}"
+			            emptyMessage="Não há órgãos cujo nome começa com esta letra"
+			            styleClass="form-control"
+			         >
+					</p:autoComplete>						
+			</div>
+			<p:message for="orgao"/>
+		</div>
+		<div class="form-group col-md-12">
+			<label>Descrição</label>
+			<h:inputTextarea
+				id="descricaoAtendimento"
+				value="#{controller.demandaHistorico.descricao}"
+				styleClass="form-control"					
+			/>
+		</div>
+		<h:panelGroup layout="block" id="panelClinica">
+			<div class="col-md-2" style="clear:both;">
+				<label>Agendamento?</label>
+				<p:selectBooleanButton
+					value="#{controller.entidade.agendamento}"
+					onLabel="Sim"
+					offLabel="Não"
+					styleClass="btn"
+				>					
+					<p:ajax event="change" process="@this" update="panelClinica"/>
+				</p:selectBooleanButton>
+			</div>
+			<div class="col-md-8">				
+				<h:outputLabel rendered="#{controller.entidade.agendamento}">Nome da Clínica</h:outputLabel>
+				<p:inputText
+					rendered="#{controller.entidade.agendamento}"
+					value = "#{controller.entidade.nomeClinica}"
+				/>
+			</div>
+			<div class="col-md-2">
+				<h:outputLabel rendered="#{controller.entidade.agendamento}">Valor</h:outputLabel>
+				<p:inputNumber
+					decimalPlaces="2"
+					decimalSeparator="," 
+					thousandSeparator="."
+					rendered="#{controller.entidade.agendamento}"
+					value="#{controller.entidade.valorAgendamento}"
+				>
+				</p:inputNumber>
+			</div>
+		</h:panelGroup>
+		<h:panelGroup layout="block" id="panelEvento">
+			<div class="col-md-2" style="clear:both;">
+				<label>Evento?</label>
+				<p:selectBooleanButton
+					value="#{controller.entidade.evento}"
+					onLabel="Sim"
+					offLabel="Não"
+					styleClass="btn"
+				>					
+					<p:ajax event="change" process="@this" update="panelEvento"/>
+				</p:selectBooleanButton>
+			</div>
+			<div class="col-md-8">				
+				<h:outputLabel rendered="#{controller.entidade.evento}">Nome do Evento</h:outputLabel>
+				<p:inputText
+					rendered="#{controller.entidade.evento}"
+					styleClass="form-control"
+					value="#{controller.entidade.nomeEvento}"
+				/>
+			</div>
+			<div class="col-md-2">
+				<h:outputLabel rendered="#{controller.entidade.evento}">Data do Evento</h:outputLabel>
+				<p:inputMask
+					rendered="#{controller.entidade.evento}" 
+					mask="99/99/9999"
+					value="#{controller.entidade.dataEvento}"
+				>
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</p:inputMask>
+			</div>			
+		</h:panelGroup>
+		<div class="col-md-6" style="clear: both;">
+			<label>Prioridade do Atendimento:</label>
+			<h:selectOneMenu
+				styleClass="form-control"
+				value="#{controller.entidade.prioridade}"
+				required="true"
+				requiredMessage="#{messages['message.field.required']}"
+				id="prioridadeAtendimentoMain"
+			>
+				<f:selectItems 
+					value="#{controller.listaPrioridade}" 
+					var="prioridade"
+					itemLabel="#{prioridade.descricao}"
+					itemValue="#{prioridade}"
+				/>
+			</h:selectOneMenu>
+			<p:message for="prioridadeAtendimentoMain"/>
+		</div>
+				
+		<div class="col-md-6">
+			<label>Situacao do Atendimento:</label>
+			<h:selectOneMenu
+				styleClass="form-control"
+				value="#{controller.entidade.situacao}"
+				required="true"
+				requiredMessage="#{messages['message.field.required']}"
+				id="situacaoAtendimentoMain"
+			>
+				<f:selectItems 
+					value="#{controller.situacaoAtendimento}" 
+					var="situacao"
+					itemLabel="#{situacao.descricao}"
+					itemValue="#{situacao}"
+				/>
+			</h:selectOneMenu>
+			<p:message for="situacaoAtendimentoMain"/>
+		</div>
+		<h3 class="cadastro-header font-blue" style="clear: both; padding-top: 20px">Providência adotada</h3>
+		<div class="form-group col-md-8">
+			<label>Encaminhado para:</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete
+						id="encaminhadoPara" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.providenciaAdotada.encaminhadoPara}"
+			            completeMethod="#{contatoController.findContatosByQuery}"
+			            var="beneficiario"
+			            converter="entidadeConverter"
+			            itemLabel="#{beneficiario.nome}"
+			            itemValue="#{beneficiario}"
+			            emptyMessage="Não há beneficiários cujo nome começa com esta letra"
+			            styleClass="form-control"
+			         >
+				</p:autoComplete>
+				<p:commandLink
+						actionListener="#{contatoController.prepareInclude}"
+						update="panelDialog"
+						process="@this"
+						oncomplete="PF('processModalContato').show()"
+						styleClass="input-group-addon"
+					>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="encaminhadoPara" target="#{contatoController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:encaminhadoPara" target="#{contatoController.update}"/>
+				</p:commandLink>
+			</div>
+			<p:message for="encaminhadoPara"/>
+		</div>
+		<div class="col-md-4">
+			<h:outputLabel>Data do Encaminhamento</h:outputLabel>
+			<p:inputMask
+				mask="99/99/9999"
+				value="#{controller.entidade.providenciaAdotada.dataEncaminhamento}"
+				id="dataEncaminhamentoMain"
+			>
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
+			</p:inputMask>
+			<p:message for="dataEncaminhamentoMain"/>
+		</div>
+		<div class="col-md-4" style="clear: both;">
+			<label>Ofício</label>
+			<div class="input-group">
+				<p:autoComplete
+						id="oficioProvidencia" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.providenciaAdotada.oficio}"
+			            completeMethod="#{oficioController.findByNumeroLike}"
+			            var="oficio"
+			            converter="entidadeConverter"
+			            itemLabel="#{oficio.nome}"
+			            itemValue="#{oficio}"
+			            emptyMessage="Não há Ofício cujo número começa com esta letra"
+			            styleClass="form-control"
+			         >
+					</p:autoComplete>
+					<p:commandLink
+						actionListener="#{oficioController.prepareInclude}"
+						update="panelModalOficio"
+						process="@this"
+						oncomplete="PF('processModalOficio').show()"
+						styleClass="input-group-addon"
+					>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="oficioProvidencia" target="#{oficioController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:oficioProvidencia" target="#{oficioController.update}"/>
+				</p:commandLink>					
+			</div>
+		</div>
+		<div class="col-md-6">
+			<label>E-mail para</label>
+			<p:inputText
+				styleClass="form-control"
+				value="#{controller.entidade.providenciaAdotada.email}"
+			/>
+		</div>		
+		<div class="col-md-2">
+			<label>Telefone</label>
+			<p:inputMask
+				styleClass="form-control"
+				mask="(99)9999-9999"
+				value="#{controller.entidade.providenciaAdotada.telefone}"
+			/>
+		</div>		
+		<h3 class="cadastro-header font-blue" style="clear: both;padding-top: 20px">Retorno ao Gabinete</h3>
+		<div class="form-group col-md-8">
+			<label>Órgão</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete 
+						id="orgaoRetorno" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.retornoSolicitacao.orgao}"
+			            completeMethod="#{orgaoEntidadeController.findOrgaosByQuery}"
+			            var="orgao"
+			            converter="entidadeConverter"
+			            itemLabel="#{orgao.nome}"
+			            itemValue="#{orgao}"
+			            emptyMessage="Não há órgãos cujo nome começa com esta letra"
+			            styleClass="form-control"
+			         >
+					</p:autoComplete>
+			</div>
+			<p:message for="orgaoRetorno"/>
+		</div>
+		<div class="col-md-4">
+			<label>Ofício</label>
+			<div class="input-group">
+				<p:autoComplete
+					id="oficioRetorno" 
+					multiple="false" 
+		            forceSelection="true"
+		            style="width:100%"
+		            value="#{controller.entidade.retornoSolicitacao.oficio}"
+		            completeMethod="#{oficioController.findByNumeroLike}"
+		            var="oficio"
+		            converter="entidadeConverter"
+		            itemLabel="#{oficio.nome}"
+		            itemValue="#{oficio}"
+		            emptyMessage="Ofício não encontrado"
+		            styleClass="form-control"
+		         >
+				</p:autoComplete>
+				<p:commandLink
+					actionListener="#{oficioController.prepareInclude}"
+					update="panelModalOficio"
+					process="@this"
+					oncomplete="PF('processModalOficio').show()"
+					styleClass="input-group-addon"
+				>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="oficioRetorno" target="#{oficioController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:oficioRetorno" target="#{oficioController.update}"/>
+				</p:commandLink>
+			</div>
+		</div>
+		<div class="col-md-10">
+			<label>E-mail para</label>
+			<p:inputText
+				styleClass="form-control"
+				value="#{controller.entidade.retornoSolicitacao.email}"
+			/>
+		</div>		
+		<div class="col-md-2">
+			<label>Telefone</label>
+			<p:inputMask
+				styleClass="form-control"
+				mask="(99)9999-9999"
+				value="#{controller.entidade.retornoSolicitacao.telefone}"
+			/>
+		</div>				
+		<h3 class="cadastro-header font-blue" style="clear: both;padding-top: 20px;">Encaminhar resposta</h3>
+		<div class="form-group col-md-8">
+			<label>Encaminhado para:</label>
+			<div class="input-group">
+				<p:autoComplete 
+					id="encaminhadoPara2" 
+					multiple="false" 
+		            forceSelection="true"
+		            style="width:100%"
+		            value="#{controller.entidade.encaminhamentoResposta.ecaminhadoPara}"
+		            completeMethod="#{contatoController.findContatosByQuery}"
+		            var="convidado"
+		            converter="entidadeConverter"
+		            itemLabel="#{convidado.nome}"
+		            itemValue="#{convidado}"
+		            emptyMessage="Não há contatos cujo nome começa com esta letra"
+		            styleClass="form-control"
+		         >
+				</p:autoComplete>
+				<p:commandLink
+						actionListener="#{contatoController.prepareInclude}"
+						update="panelDialog"
+						process="@this"
+						oncomplete="PF('processModalContato').show()"
+						styleClass="input-group-addon"
+					>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="encaminhadoPara2" target="#{contatoController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:encaminhadoPara2" target="#{contatoController.update}"/>
+				</p:commandLink>
+			</div> 
+		</div>
+		<div class="col-md-4">
+			<h:outputLabel>Data do Encaminhamento</h:outputLabel>
+			<p:inputMask
+				mask="99/99/9999"
+				value="#{controller.entidade.encaminhamentoResposta.dataEncaminhamento}"
+			>
+				<f:convertDateTime pattern="dd/MM/yyyy"/>
+			</p:inputMask>
+		</div>
+		<div class="col-md-4" style="clear: both;">
+			<label>Ofício</label>
+			<div class="input-group">
+				<p:autoComplete
+					id="oficioEncaminhamento" 
+					multiple="false" 
+		            forceSelection="true"
+		            style="width:100%"
+		            value="#{controller.entidade.encaminhamentoResposta.oficio}"
+		            completeMethod="#{oficioController.findByNumeroLike}"
+		            var="oficio"
+		            converter="entidadeConverter"
+		            itemLabel="#{oficio.nome}"
+		            itemValue="#{oficio}"
+		            emptyMessage="Não há Ofício cujo número começa com esta letra"
+		            styleClass="form-control"
+		         >
+				</p:autoComplete>
+				<p:commandLink
+						actionListener="#{oficioController.prepareInclude}"
+						update="panelModalOficio"
+						process="@this"
+						oncomplete="PF('processModalOficio').show()"
+						styleClass="input-group-addon"
+					>
+					<i class="fa fa-plus"></i>
+					<f:setPropertyActionListener value="oficioEncaminhamento" target="#{oficioController.property}"/>
+					<f:setPropertyActionListener value="panelModalDemanda:oficioEncaminhamento" target="#{oficioController.update}"/>
+				</p:commandLink>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<label>E-mail para</label>
+			<p:inputText
+				styleClass="form-control"
+				value="#{controller.entidade.encaminhamentoResposta.email}"
+			/>
+		</div>		
+</f:view>

@@ -1,0 +1,41 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">	
+	<!-- Modal -->
+	<h:form id="panelHistorico">					
+		<p:dialog id="historicModal" 
+			widgetVar="historicModal" 
+			modal="true" 
+			header="Histórico da Demanda"
+			width="900"
+			resizable="false"
+			style="max-height:700px;overflow:auto"
+		>
+		  <div class="ui-fluid">
+			<h:panelGroup id="panel" layout="block" styleClass="form-body">
+				<p:dataTable 
+					var="entidade" 
+					value="#{controller.entidade.historico}"
+					tableStyleClass="table table-striped table-hover table-border results"
+					rowStyleClass="table-row"
+					emptyMessage="#{messages['message.registro.nao.encontrado']}"
+					widgetVar="demandasTable"
+				>
+					<p:column headerText="Descrição" width="80">
+						<h:outputText value="#{entidade.descricao}"/>					
+					</p:column>
+					<p:column headerText="Descrição" width="20">
+						<h:outputText value="#{entidade.dataHistorico}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+		  </div>
+	    </p:dialog>
+    </h:form>
+</f:view>

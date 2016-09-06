@@ -1,0 +1,91 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+        
+        <div class="form-group col-md-8">
+			<label>Beneficiário</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-user"></i>
+				</span>
+				<p:autoComplete 
+						id="beneficiarioEvento" 
+						multiple="false" 
+			            forceSelection="true"
+			            style="width:100%"
+			            value="#{controller.entidade.contatoInteressado}"
+			            completeMethod="#{contatoController.findContatosByQuery}"
+			            var="beneficiario"
+			            converter="entidadeConverter"
+			            itemLabel="#{beneficiario.nome}"
+			            itemValue="#{beneficiario}"
+			            emptyMessage="Não há beneficiários cujo nome começa com esta letra"
+			            required="true"
+			            requiredMessage="#{messages['message.field.required']}"
+			            styleClass="form-control"
+			         >
+					</p:autoComplete>
+			</div>
+			<p:message for="beneficiario"/>
+		</div>
+		<div class="form-group col-md-4">
+			<label>Valor</label>
+			<div class="input-group">
+				<span class="input-group-addon">
+					<i class="fa fa-usd"></i>
+				</span>
+				<p:inputNumber
+					id="valorEvento"
+					value="#{controller.entidade.valor}"
+					styleClass="form-control"
+					decimalPlaces="2"
+					decimalSeparator="," 
+					thousandSeparator="."
+				>
+				</p:inputNumber>
+			</div>
+		</div>
+		<h:panelGroup layout="block" id="panelEvento">
+			<div class="col-md-2" style="clear:both;">
+				<label>Evento</label>
+				<p:selectBooleanButton
+					value="#{controller.entidade.evento}"
+					onLabel="Sim"
+					offLabel="Não"
+					styleClass="btn"
+				>					
+					<p:ajax event="change" process="@this" update="panelEvento"/>
+				</p:selectBooleanButton>
+			</div>
+			<div class="col-md-8">				
+				<h:outputLabel rendered="#{controller.entidade.evento}">Nome do Evento</h:outputLabel>
+				<p:inputText
+					rendered="#{controller.entidade.evento}"
+					styleClass="form-control"
+					value="#{controller.entidade.nomeEvento}"
+				/>
+			</div>
+			<div class="col-md-2">
+				<h:outputLabel rendered="#{controller.entidade.evento}">Data do Evento</h:outputLabel>
+				<p:inputMask
+					rendered="#{controller.entidade.evento}" 
+					mask="99/99/9999"
+					value="#{controller.entidade.dataEvento}"
+				>
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</p:inputMask>
+			</div>
+			<div class="form-group col-md-12">
+				<label>Descrição</label>
+				<h:inputTextarea
+					id="descricaoEvento"
+					value="#{controller.demandaHistorico.descricao}"
+					styleClass="form-control"					
+				/>
+			</div>
+		</h:panelGroup>
+</f:view>

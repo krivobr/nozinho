@@ -1,0 +1,20 @@
+/**
+ * Exemplos de Parâmetros
+ * $packagePrefix = br.com.alasolution
+ * $packageSulfix = cadastro
+ * $entityName = Categoria
+ * $entityImportLocal = br.com.alasolution.dominio.entidade.cadastro.
+ */
+package ${packagePrefix}.dao.${packageSulfix}.impl;
+
+import br.com.alasolution.dao.util.GenericDAO;
+import br.com.alasolution.dao.util.impl.GenericDAOBean;
+import br.com.alasolution.dominio.entidade.${packageSulfix}.${entityName};
+
+/**
+ * @author AndreLA
+ * Classe DAO ${entityName}DAOBean
+ */
+public class ${entityName}DAOBean extends GenericDAOBean<${entityName}> implements GenericDAO<${entityName}> {
+
+}

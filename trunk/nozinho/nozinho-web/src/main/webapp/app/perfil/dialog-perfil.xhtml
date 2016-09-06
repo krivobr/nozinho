@@ -1,0 +1,69 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+
+	<!-- Modal -->
+	<p:dialog id="processModal" widgetVar="processModal" modal="true"
+		header="Cadastrar/Editar Perfil" width="900" resizable="false"
+		closable="false">
+		<h:form id="panelModal" styleClass="form-body">
+			<div class="modal-body">
+				<div class="form-group col-md-12">
+					<label>Nome do Perfil</label>
+					<div class="input-group">
+						<span class="input-group-addon"> <i class="fa fa-home"></i>
+						</span>
+						<p:inputText styleClass="form-control" placeholder="Perfil"
+							value="#{controller.entidade.nome}" required="true"
+							requiredMessage="#{messages['message.field.required']}" id="nome" />
+					</div>
+					<p:message for="nome" />
+				</div>
+				<div class="col-md-3">
+					<p:selectBooleanCheckbox
+						value="#{perfilController.selectAll}"						
+					>
+						<p:ajax 
+							event="change" 
+							process="@this" 
+							update="permissoes" 
+							listener="#{controller.changeCheckBox}"
+						/>
+					</p:selectBooleanCheckbox>
+					<h:outputLabel value=" Todas Permissões" styleClass="ui-checkbox-label" />
+				</div>
+				<div class="col-md-12">					
+					<p:selectManyCheckbox 
+						id="permissoes" 
+						value="#{perfilController.selectedPermissions}" 
+						layout="responsive" 
+						columns="3"
+						converter="entidadeConverter"						
+					>
+	        			<f:selectItems 
+	        				value="#{perfilController.permissoes}" 
+	        				var="permissao" 
+	        				itemLabel="#{permissao.nome}" 
+	        				itemValue="#{permissao}"        				
+	        			/>
+	    			</p:selectManyCheckbox>
+    			</div>
+			</div>
+			<div class="modal-footer" style="border-top: 0; clear: both;">
+				<div class="button-section">
+					<p:commandButton styleClass="btn btn-danger" value="Fechar"
+						onclick="PF('processModal').hide()" />
+					<p:commandButton styleClass="btn btn-primary" data-dismiss="modal"
+						action="#{controller.processaEntidade}" process="processModal"
+						update="panelModal" value="Salvar" id="btnSalvar" />
+					<p:defaultCommand target="btnSalvar" />
+				</div>
+			</div>
+		</h:form>
+	</p:dialog>
+</f:view>	

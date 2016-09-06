@@ -1,0 +1,22 @@
+/**
+ * Exemplos de Parâmetros
+ * $packagePrefix = br.com.alasolution
+ * $packageSulfix = cadastro
+ * $entityName = Categoria
+ * $entityImportLocal = br.com.alasolution.dominio.entidade.cadastro.
+ */
+package ${packagePrefix}.service.${packageSulfix};
+
+import javax.ejb.Local;
+
+import br.com.alasolution.dominio.entidade.${packageSulfix}.${entityName};
+import br.com.alasolution.service.util.GenericService;
+
+/**
+ * @author AndreLA
+ * Interface ${entityName}Service
+ */
+@Local
+public interface ${entityName}Service extends GenericService<${entityName}> {
+
+}

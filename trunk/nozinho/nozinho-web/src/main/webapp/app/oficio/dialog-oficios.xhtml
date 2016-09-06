@@ -1,0 +1,215 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ar="http://mfframework.com.br/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        contentType="text/html">
+	<h:form id="panelModalOficio">
+		<!-- Modal -->					
+		<p:dialog id="processModalOficio" 
+			widgetVar="processModalOficio" 
+			modal="true" 
+			header="Cadastrar/Editar Ofício"
+			width="900"
+			resizable="false"
+		>
+		<h:panelGroup id="panel" layout="block" styleClass="form-body">
+		  <div class="ui-fluid">
+		  <div class="modal-body">
+				<div class="form-group col-md-6">
+					<label>Número do Ofício</label>
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="fa fa-home"></i>
+						</span>
+						<p:inputText 
+							styleClass="form-control" 
+							placeholder="Número" 
+							value="#{oficioController.entidade.numero}"
+							required="true"
+							requiredMessage="#{messages['message.field.required']}"
+							id="nome"
+						/> 
+					</div>
+					<p:message for="nome"/>
+				</div>
+				<div class="form-group col-md-6">
+					<h:outputLabel>Data do Ofício</h:outputLabel>
+					<p:calendar 
+						id="dataOficio"
+						mask="true" 
+						pattern="dd/MM/yyyy" 
+						value="#{oficioController.entidade.dataOficio}"
+						required="true"
+						requiredMessage="#{messages['message.field.required']}"
+					/>										
+					<p:message for="dataOficio"/>
+				</div>
+				<div class="form-group col-md-6" style="clear:both;">
+					<h:outputLabel>Data do Protocolo</h:outputLabel>
+					<p:calendar 
+						mask="true" 
+						pattern="dd/MM/yyyy" 
+						value="#{oficioController.entidade.dataProtocolo}"						
+					/>							
+				</div>										
+				<div class="form-group col-md-6">
+					<h:outputLabel>Data do Recebimento</h:outputLabel>
+					<p:calendar 
+						mask="true" 
+						pattern="dd/MM/yyyy" 
+						value="#{oficioController.entidade.dataRecebimento}"						
+					/>							
+				</div>										
+				<h:panelGroup layout="block" id="panelEvento">
+					<div class="col-md-2">
+						<label>Ofício Interno</label>
+						<p:selectBooleanButton
+							value="#{oficioController.entidade.oficioInterno}"
+							onLabel="Sim"
+							offLabel="Não"
+							styleClass="btn"
+						>					
+							<p:ajax event="change" process="@this" update="panelEvento"/>
+						</p:selectBooleanButton>
+					</div>
+					<div class="col-md-5">				
+						<h:outputLabel>Nome do Órgao</h:outputLabel>
+						<div class="input-group">
+							<p:autoComplete 
+									id="orgao" 
+									multiple="false" 
+						            forceSelection="true"
+						            value="#{oficioController.entidade.orgao}"
+						            completeMethod="#{orgaoEntidadeController.findOrgaosByQuery}"
+						            var="orgao"
+						            converter="entidadeConverter"
+						            itemLabel="#{orgao.nome}"
+						            itemValue="#{orgao}"
+						            emptyMessage="Não há órgãos cujo nome começa com esta letra"
+						            required="#{!oficioController.entidade.oficioInterno}"
+						            requiredMessage="#{messages['message.field.required']}"
+						            disabled="#{oficioController.entidade.oficioInterno}"
+						            styleClass="form-control "
+						         >
+							</p:autoComplete>
+							<p:commandLink
+								actionListener="#{orgaoEntidadeController.prepareInclude}"
+								update="panelModalOrgao"
+								process="@this"
+								oncomplete="PF('processModalOrgao').show()"
+								styleClass="input-group-addon plus-button"
+							>
+								<i class="fa fa-plus"></i>
+							</p:commandLink>
+						</div>
+						<p:message for="orgao" rendered="#{!oficioController.entidade.oficioInterno}"/>
+					</div>
+					</h:panelGroup>
+					<h:panelGroup layout="block" id="panelResposta">
+					<div class="col-md-2">
+						<label>Ofício Resposta</label>
+						<p:selectBooleanButton
+							value="#{oficioController.entidade.oficioResposta}"
+							onLabel="Sim"
+							offLabel="Não"
+							styleClass="btn"
+						>					
+							<p:ajax event="change" process="@this" update="panelResposta"/>
+						</p:selectBooleanButton>
+					</div>
+					<div class="col-md-3">				
+						<h:outputLabel>Número do Ofício</h:outputLabel>
+						<p:autoComplete 
+								id="oficioResposta" 
+								multiple="false" 
+					            forceSelection="true"
+					            value="#{oficioController.entidade.oficio}"
+					            completeMethod="#{oficioController.findByNumeroLike}"
+					            var="oficio"
+					            converter="entidadeConverter"
+					            itemLabel="#{oficio.numero}"
+					            itemValue="#{oficio}"
+					            emptyMessage="Não há ofícios com este número"
+					            required="#{oficioController.entidade.oficioResposta}"
+					            requiredMessage="#{messages['message.field.required']}"
+					            disabled="#{!oficioController.entidade.oficioResposta}"
+					            styleClass="form-control"
+					         >
+						</p:autoComplete>							
+						<p:message for="oficioResposta" rendered="#{oficioController.entidade.oficioResposta}"/>
+					</div>			
+				</h:panelGroup>
+				<div class="col-md-12" style="margin-top:20px">
+					<label>Anexar Ofício</label>
+					<p:fileUpload 
+						fileUploadListener="#{oficioController.handleFileUpload}" 
+						mode="advanced" 
+						dragDropSupport="false"
+	  					update="formMessages:messages" 
+	  					sizeLimit="100000000" 
+	  					fileLimit="1" 
+	  					allowTypes="/(\.|\/)(doc|pdf|txt|msg)$/"
+	  					auto="true"
+	  					label="Selecionar"
+	  					fileLimitMessage="Arquivo maior que o permitido (100Mb)"
+		  			/>
+				</div>													
+		  	</div>
+		  	</div>
+			  <div class="modal-footer" style="border-top:0;clear: both;">
+				<div class="button-section">
+					<p:commandButton 
+						actionListener="#{oficioController.prepareUpdate}"
+						oncomplete="PF('documentModal').show()"
+						process="@this"
+						update="panelGroupDocument"
+						rendered="#{not empty controller.entidade.documento}"
+						value="Visualizar"
+						styleClass="btn btn-success"
+					>
+						<f:setPropertyActionListener 
+							value="#{oficioController.entidade.documento}" 
+							target="#{documentViewerController.document}"
+						/>
+					</p:commandButton>
+					<p:commandButton 
+						styleClass="btn btn-danger"
+						value="Fechar"
+						onclick="PF('processModalOficio').hide()"
+						process="@this"
+						update="@none"
+					/>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						data-dismiss="modal" 
+						action="#{oficioController.processaEntidade}" 
+						process="processModalOficio"
+						update="panel"
+						value="Salvar"
+						id="btnSalvar"
+						rendered="#{not atalho}"
+					/>
+					<p:defaultCommand target="btnSalvar" rendered="#{not atalho}"/>
+					<p:commandButton 
+						styleClass="btn btn-primary" 
+						data-dismiss="modal" 
+						action="#{oficioController.processaEntidadeAtalho}" 
+						process="processModalOficio"
+						update="panel, #{update}"
+						value="Salvar"
+						id="btnSalvarAtalho"
+						rendered="#{atalho}"
+					>
+						<f:setPropertyActionListener value="#{bean}" target="#{oficioController.caller}"/>						
+					</p:commandButton>
+					<p:defaultCommand target="btnSalvarAtalho" rendered="#{atalho}"/>
+					
+				</div>
+			  </div>
+			</h:panelGroup>			
+		</p:dialog>
+	</h:form>
+</f:view>	
